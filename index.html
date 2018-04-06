@@ -17,6 +17,7 @@
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
       testAPI();
+      getUser();
     } else {
       // The person is not logged into your app or we are unable to tell.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -79,6 +80,20 @@
         'Thanks for logging in, ' + response.name + '!';
     });
   }
+
+  function getUser() {
+      <!--
+       Getting "(#200) Access ot this data is temporarily disabled for non-active apps for apps that have not
+       recently accessed this data due to changes we are making to the Facebook Platform.
+       " developers.facebook.com/status/issues/205942813488872/"
+       -->
+      console.log("getting a user information");
+      FB.api('https://graph.facebook.com/v2.12/820882001277849', response=>{
+          console.log(response);
+          response.json
+      })
+  }
+
 </script>
 
 <!--
