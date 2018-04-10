@@ -1,8 +1,3 @@
-
-
-
-
-
 from flask import Flask, Response, request, send_from_directory
 import random, json
 from pathlib import Path
