@@ -2,7 +2,12 @@ var map;
 function initMap(APIKey) {
     var script=document.createElement('script')
     script.src="https://maps.googleapis.com/maps/api/js?key="+APIKey//+"&callback=initMap"
+    script.defer=true
+    script.async=true
+    console.log(script.src)
     document.getElementsByTagName('head')[0].appendChild(script);
+
+    console.log('api key script generated')
 
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 2,

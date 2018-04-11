@@ -1,27 +1,31 @@
+var googleMapsAPI
+
 function readSingleFile(e) {
-    var file = e.target.files[0];
+    var file = e.target.files[0]
     if (!file) {
-        return;
+        return
     }
-    var reader = new FileReader();
+    var reader = new FileReader()
     reader.onload = function(e) {
-        var content = e.target.result;
-        displayContents(content);
+        googleMapsAPI=e.target.result
+        displayContents(googleMapsAPI)
     };
-    reader.readAsText(file);
-    console.log("read api")
-    return content
+    reader.readAsText(file)
+    return googleMapsAPI
 }
 
 function readGoogleAPI(e){
     let APIKey=readSingleFile(e)
+    print('init')
     initMap(APIKey)
 }
 
 function displayContents(contents) {
-    var element = document.getElementById('file-content');
-    element.textContent = contents;
+    var element = document.getElementById('file-content')
+    element.textContent = contents
 }
 
-document.getElementById('file-input')
-    .addEventListener('change', readSingleFile, false);
+window.onload=()=>{
+    document.getElementById('google-api')
+    .addEventListener('change', readGoogleAPI, false)
+}
