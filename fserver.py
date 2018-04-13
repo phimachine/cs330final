@@ -16,6 +16,9 @@ def send_css(path):
 def root():
     return send_from_directory('',"index.html")
 
+@app.route('/googlemaps')
+def googlemaps():
+    return send_from_directory("","googlemaps.html")
 
 
 if __name__=="__main__":
