@@ -29,7 +29,7 @@ def sends_src(path):
 def query():
     term=request.args.get("term")
     location=request.args.get("location")
-    geojson=yelp(term,location,verbose=True)
+    geojson=yelp(term,location)
     res=Response(geojson)
     res.headers['Content-type'] = 'application/json'
     return res

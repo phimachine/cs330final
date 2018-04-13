@@ -34,4 +34,4 @@ def sends_src(path):
 
 
 if __name__=="__main__":
-    app.run(debug=True, port=5001, ssl_context=('../cert/server.crt','../cert/server.key'))
+    app.run(debug=True, port=5001, ssl_context=('../../cert/server.crt','../../cert/server.key'))

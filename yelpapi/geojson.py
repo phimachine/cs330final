@@ -25,9 +25,9 @@ def make_geojson(response):
     :param response: yelp fusion response
     :return: geojson string
     """
-    print(type(response))
+    # print(type(response))
     # response is a dictionary
-    print(response)
+    # print(response)
     # with open("yelpapi/sample_response","wb") as file:
     #     pickle.dump(response,file)
 

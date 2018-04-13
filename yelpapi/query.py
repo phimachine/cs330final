@@ -20,6 +20,7 @@ import pprint
 import requests
 import sys
 import urllib
+import platform
 
 
 # This client code can run on Python 2.x or 3.x.  Your imports can be
@@ -42,8 +43,12 @@ except ImportError:
 # You can find it on
 # https://www.yelp.com/developers/v3/manage_app
 API_KEY= None
-with open('/Users/jasonhu/Documents/yelp.api','r') as yelp_api:
-    API_KEY=yelp_api.readline()
+if platform.system()=='Linux':
+    with open('/home/jasonhu/Documents/yelp.api','r') as yelp_api:
+        API_KEY=yelp_api.readline()
+else:
+    with open('/Users/jasonhu/Documents/yelp.api','r') as yelp_api:
+        API_KEY=yelp_api.readline()
 
 API_KEY=API_KEY.strip()
 

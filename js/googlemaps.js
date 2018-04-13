@@ -138,13 +138,14 @@ function initMap() {
 
     // Load the stores GeoJSON onto the map.
     yelpQuery.query('dinner',"San Francisco, CA")
-    // map.data.loadGeoJson("/yelpquery?term="+term+"&location="+location);
+    // map.data.loadGeoJson("yelpquery?term="+term+"&location="+location);
 
     // Define the custom marker icons, using the store's "category".
+    // Not going to define it for our application just yet.
     map.data.setStyle(feature => {
         return {
             icon: {
-                url: `img/icon_${feature.getProperty('category')}.png`,
+                url: `img/icon_cafe.png`,
                 scaledSize: new google.maps.Size(64, 64)
             }
         };
