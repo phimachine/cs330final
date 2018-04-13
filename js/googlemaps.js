@@ -142,14 +142,14 @@ function initMap() {
 
     // Define the custom marker icons, using the store's "category".
     // Not going to define it for our application just yet.
-    map.data.setStyle(feature => {
-        return {
-            icon: {
-                url: `img/icon_cafe.png`,
-                scaledSize: new google.maps.Size(64, 64)
-            }
-        };
-    });
+    // map.data.setStyle(feature => {
+    //     return {
+    //         icon: {
+    //             url: `img/icon_cafe.png`,
+    //             scaledSize: new google.maps.Size(64, 64)
+    //         }
+    //     };
+    // });
 
     const apiKey = 'AIzaSyAsidkmuLavmoPyURZMxIyBZ0_lB4XqUAI';
     const infoWindow = new google.maps.InfoWindow();

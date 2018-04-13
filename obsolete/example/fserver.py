@@ -1,5 +1,6 @@
 from flask import Flask, Response, send_from_directory
 from flask_cors import CORS
+import json
 
 app=Flask(__name__)
 cors=CORS(app)
@@ -31,6 +32,15 @@ def googlemaps():
 @app.route('/<path:path>')
 def sends_src(path):
     return send_from_directory("example",path)
+
+@app.route('/geojson')
+def _2():
+    res= send_from_directory("","geojson")
+    # geojson=json.loads(file)
+    # print("hello",type(geojson))
+    res.headers['Content-type'] = 'application/json'
+
+    return res
 
 
 if __name__=="__main__":

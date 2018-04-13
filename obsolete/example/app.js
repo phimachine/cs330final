@@ -131,43 +131,43 @@ function initMap() {
   });
 
   // Load the stores GeoJSON onto the map.
-  map.data.loadGeoJson('stores.json');
+  map.data.loadGeoJson('geojson');
 
   // Define the custom marker icons, using the store's "category".
-  // map.data.setStyle(feature => {
-  //   return {
-  //     icon: {
-  //       url: `img/icon_${feature.getProperty('category')}.png`,
-  //       scaledSize: new google.maps.Size(64, 64)
-  //     }
-  //   };
-  // });
-  //
-  // const apiKey = 'AIzaSyAsidkmuLavmoPyURZMxIyBZ0_lB4XqUAI';
-  // const infoWindow = new google.maps.InfoWindow();
-  // infoWindow.setOptions({pixelOffset: new google.maps.Size(0, -30)});
+  map.data.setStyle(feature => {
+    return {
+      icon: {
+        url: `img/icon_${feature.getProperty('category')}.png`,
+        scaledSize: new google.maps.Size(64, 64)
+      }
+    };
+  });
 
-  // // Show the information for a store when its marker is clicked.
-  // map.data.addListener('click', event => {
-  //
-  //   const category = event.feature.getProperty('category');
-  //   const name = event.feature.getProperty('name');
-  //   const description = event.feature.getProperty('description');
-  //   const hours = event.feature.getProperty('hours');
-  //   const phone = event.feature.getProperty('phone');
-  //   const position = event.feature.getGeometry().get();
-  //   const content = sanitizeHTML`
-  //     <img style="float:left; width:200px; margin-top:30px" src="img/logo_${category}.png">
-  //     <div style="margin-left:220px; margin-bottom:20px;">
-  //       <h2>${name}</h2><p>${description}</p>
-  //       <p><b>Open:</b> ${hours}<br/><b>Phone:</b> ${phone}</p>
-  //       <p><img src="https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}"></p>
-  //     </div>
-  //   `;
-  //
-  //   infoWindow.setContent(content);
-  //   infoWindow.setPosition(position);
-  //   infoWindow.open(map);
-  // });
+  const apiKey = 'AIzaSyAsidkmuLavmoPyURZMxIyBZ0_lB4XqUAI';
+  const infoWindow = new google.maps.InfoWindow();
+  infoWindow.setOptions({pixelOffset: new google.maps.Size(0, -30)});
+
+  // Show the information for a store when its marker is clicked.
+  map.data.addListener('click', event => {
+
+    const category = event.feature.getProperty('category');
+    const name = event.feature.getProperty('name');
+    const description = event.feature.getProperty('description');
+    const hours = event.feature.getProperty('hours');
+    const phone = event.feature.getProperty('phone');
+    const position = event.feature.getGeometry().get();
+    const content = sanitizeHTML`
+      <img style="float:left; width:200px; margin-top:30px" src="img/logo_${category}.png">
+      <div style="margin-left:220px; margin-bottom:20px;">
+        <h2>${name}</h2><p>${description}</p>
+        <p><b>Open:</b> ${hours}<br/><b>Phone:</b> ${phone}</p>
+        <p><img src="https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}"></p>
+      </div>
+    `;
+
+    infoWindow.setContent(content);
+    infoWindow.setPosition(position);
+    infoWindow.open(map);
+  });
 
 }

@@ -34,7 +34,7 @@ def make_geojson(response):
     json_ret={}
     json_ret["geometry"]={}
     json_ret["geometry"]["type"]="Point"
-    coordinates=[response['coordinates']['latitude'],response['coordinates']['longitude']]
+    coordinates=[response['coordinates']['longitude'],response['coordinates']['latitude']]
     json_ret["geometry"]["coordinates"]=coordinates
 
     json_ret["type"]="Feature"
