@@ -1,7 +1,7 @@
 from flask import Flask, Response, send_from_directory
 from flask_cors import CORS
 
-app=Flask(__name__,static_url_path="")
+app=Flask(__name__)
 cors=CORS(app)
 
 @app.route('/js/<path:path>')
@@ -12,7 +12,7 @@ def send_js(path):
 def send_css(path):
     return send_from_directory("css",path)
 
-@app.route('/')
+@app.route('/index.html')
 def root():
     return send_from_directory('',"index.html")
 
@@ -26,11 +26,11 @@ def send_img(path):
 
 @app.route('/googlemaps')
 def googlemaps():
-    return send_from_directory("","googlemaps.html")
+    return send_from_directory("","googlemapsexample.html")
 
 @app.route('/<path:path>')
 def sends_src(path):
-    return send_from_directory("src",path)
+    return send_from_directory("example",path)
 
 
 if __name__=="__main__":

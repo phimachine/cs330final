@@ -23,7 +23,7 @@ function getRestaurant(){
         '    }\n' +
         '}'
     config.mode='cors'
-    let get_string="https://api.yelp.com/v3/graphql"
+    let get_string="https://api.yelpapi.com/v3/graphql"
 
     let answer=fetch(get_string,config)
         .then(function(response){

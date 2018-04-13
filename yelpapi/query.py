@@ -5,7 +5,7 @@ This program demonstrates the capability of the Yelp Fusion API
 by using the Search API to query for businesses by a search term and location,
 and the Business API to query additional information about the top result
 from the search query.
-Please refer to http://www.yelp.com/developers/v3/documentation for the API
+Please refer to http://www.yelpapi.com/developers/v3/documentation for the API
 documentation.
 This program requires the Python requests library, which you can install via:
 `pip install -r requirements.txt`.
@@ -137,6 +137,40 @@ def query_api(term, location):
 
     print(u'Result for business "{0}" found:'.format(business_id))
     pprint.pprint(response, indent=2)
+
+
+class NoYelpBusiness(Exception):
+    def __init__(self,message,errors):
+        super(NoYelpBusiness, self).__init__(message)
+
+def my_query(term=DEFAULT_TERM, location=DEFAULT_LOCATION,verbose=False):
+    """Query the API by the input from user. Designed to be marked on Google Maps.
+        Args:
+        term (str): The search term to query.
+        location (str): The location of the business to query.
+    """
+
+    response = search(API_KEY, term, location)
+
+    businesses = response.get('businesses')
+
+    if not businesses:
+        raise NoYelpBusiness(u'No businesses for {0} in {1} found.'.format(term, location))
+        return None
+
+    business_id = businesses[0]['id']
+
+    if verbose:
+        print(u'{0} businesses found, querying business info ' \
+            'for the top result "{1}" ...'.format(
+                len(businesses), business_id))
+    response = get_business(API_KEY, business_id)
+
+    if verbose:
+        print(u'Result for business "{0}" found:'.format(business_id))
+        pprint.pprint(response, indent=2)
+
+    return business_id, response
 
 
 def main():

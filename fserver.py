@@ -1,5 +1,6 @@
-from flask import Flask, Response, send_from_directory
+from flask import Flask, Response, send_from_directory, request
 from flask_cors import CORS
+from yelp_query import *
 
 app=Flask(__name__,static_url_path="")
 cors=CORS(app)
@@ -18,11 +19,24 @@ def root():
 
 @app.route('/googlemaps')
 def googlemaps():
-    return send_from_directory("","googlemaps.html")
+    return send_from_directory("","gm.html")
 
-@app.route('/src/<path:path>')
+@app.route('/example/<path:path>')
 def sends_src(path):
-    return send_from_directory("src",path)
+    return send_from_directory("example",path)
+
+@app.route("/yelpquery")
+def query():
+    term=request.args.get("term")
+    location=request.args.get("location")
+    geojson=yelp(term,location,verbose=True)
+    res=Response(geojson)
+    res.headers['Content-type'] = 'application/json'
+    return res
+
+
+# ?term="+term+"&location="+location)
+
 
 
 if __name__=="__main__":
