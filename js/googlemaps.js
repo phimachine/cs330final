@@ -197,10 +197,16 @@ function initMap() {
         const description = "foo bar"
         // from html:
         const content = sanitizeHTML`
-            <div><img style=\"float:left; width:300px; margin-top:0px\" src=\"${imageUrl}\">
-            <div style="margin-left:320px; margin-bottom:20px;">
+
+            <div class=\"shopalbum\">
+                <img src=\"${imageUrl}\">
+                <p>Click the thumbnail for photo album.</p>
+            </div>
+      
+
+            <div class=\"shopcard\">
                 <h2>${name}<br/>
-                <img style=\"float:left; width:100px; margin-top:5px\" src=\"${rating_png}\"><br/>
+                <img src=\"${rating_png}\"><br/>
                 </h2>
                 
                 <p>
@@ -210,11 +216,15 @@ function initMap() {
                 <b>Phone:</b> ${phone}<br/>
                 <b>Address:</b> ${address}<br/>
                 </p>
-                <p><b>Google Streetview:</b><br/>
-            </div></div>
+                <div class="gsv">
+                    <b>Google Streetview:</b><br/>
+                    <img src=\"https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}\">
+                </div>
+            </div>
+            
+
             
             <div>
-                <img  style=\"margin-top:10px\" src=\"https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}\"></p>
             </div>
         `
 

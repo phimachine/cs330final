@@ -19,11 +19,11 @@ def send_img(path):
 
 @app.route('/')
 def root():
-    return send_from_directory('',"index.html")
+    return send_from_directory('',"search.html")
 
 @app.route('/googlemaps')
 def googlemaps():
-    return send_from_directory("","gm.html")
+    return send_from_directory("","googlemaps.html")
 
 @app.route('/example/<path:path>')
 def sends_src(path):

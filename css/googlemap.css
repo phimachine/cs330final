@@ -7,14 +7,53 @@ margin: 0;
 padding: 0;
 }
 
-.custom-iw .gm-style-iw,
-.custom-iw .gm-style-iw>div,
-.custom-iw .gm-style-iw>div>div {
-  width:100% !important;
-  max-width:100% !important;
+/*.custom-iw .gm-style-iw,*/
+/*.custom-iw .gm-style-iw>div,*/
+/*.custom-iw .gm-style-iw>div>div {*/
+  /*width:100% !important;*/
+  /*max-width:100% !important;*/
+/*}*/
+/*!** set here the width **!*/
+/*.custom-iw,*/
+/*.custom-iw>div:first-child>div:last-child {*/
+  /*width:342px !important;*/
+/*}*/
+
+/*.shopcards{*/
+  /*margin-left:320px;*/
+  /*margin-bottom:20px;*/
+/*}*/
+
+.shopalbum{
+  float:left;
+  width:320px;
+  margin-right:20px;
+  margin-top:20px;
 }
-/** set here the width **/
-.custom-iw,
-.custom-iw>div:first-child>div:last-child {
-  width:342px !important;
+
+.shopalbum img{
+  float:left;
+  width:300px;
+  margin-top:0px;
+}
+
+.shopalbum p{
+  margin-top:220px;
+}
+
+
+.shopcard{
+  margin-left:320px;
+  width:300px;
+  margin-bottom:130px;
+}
+
+.shopcard img{
+  float:left;
+  width:100px;
+  margin-top:5px;
+}
+
+.gsv img{
+  width:280px
 }

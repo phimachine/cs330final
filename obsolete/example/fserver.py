@@ -13,9 +13,9 @@ def send_js(path):
 def send_css(path):
     return send_from_directory("css",path)
 
-@app.route('/index.html')
+@app.route('/search.html')
 def root():
-    return send_from_directory('',"index.html")
+    return send_from_directory('',"search.html")
 
 @app.route('/<path:path>')
 def send_root(path):
