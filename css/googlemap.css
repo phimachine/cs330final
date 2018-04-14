@@ -6,3 +6,15 @@ height: 100%;
 margin: 0;
 padding: 0;
 }
+
+.custom-iw .gm-style-iw,
+.custom-iw .gm-style-iw>div,
+.custom-iw .gm-style-iw>div>div {
+  width:100% !important;
+  max-width:100% !important;
+}
+/** set here the width **/
+.custom-iw,
+.custom-iw>div:first-child>div:last-child {
+  width:342px !important;
+}
