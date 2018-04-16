@@ -106,6 +106,15 @@ const mapStyle = [
     }
 ];
 
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
 // Escapes HTML characters in a template literal string, to prevent XSS.
 // See https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet#RULE_.231_-_HTML_Escape_Before_Inserting_Untrusted_Data_into_HTML_Element_Content
@@ -121,6 +130,14 @@ function sanitizeHTML(strings) {
     return result;
 }
 
+function ratingToString(rating){
+    if (rating%1!=0){
+        return Math.floor(rating)+"_half"
+    }
+    else{
+        return rating
+    }
+}
 function initMap() {
     console.log('initiating map')
 
@@ -138,7 +155,10 @@ function initMap() {
     // console.log(map)
 
     // Load the stores GeoJSON onto the map.
+    let searchTerm=getParameterByName('term')
+    let searchLocation=getParameterByName('location')
     yelpQuery.query(searchTerm, searchLocation)
+    console.log("yelpQuery.query("+searchTerm+","+searchLocation+")")
     // map.data.loadGeoJson("yelpquery?term="+term+"&location="+location);
 
     // Define the custom marker icons, using the store's "category".
@@ -190,8 +210,9 @@ function initMap() {
         console.log(imageUrl)
         const phone = event.feature.getProperty('phone')
         const price = event.feature.getProperty('price')
-        const rating = event.feature.getProperty('rating')
-        const rating_png="img/yelp_stars/extra_large/extra_large_"+rating+"_half@3x.png"
+        const rating = ratingToString(event.feature.getProperty('rating'))
+        console.log(rating)
+        const rating_png="img/yelp_stars/extra_large/extra_large_"+rating+"@3x.png"
         const address = event.feature.getProperty('location')['display_address'].join(", ")
         const position = event.feature.getGeometry().get();
         const description = "foo bar"
@@ -200,7 +221,7 @@ function initMap() {
 
             <div class=\"shopalbum\">
                 <img src=\"${imageUrl}\">
-                <p>Click the thumbnail for photo album.</p>
+                <!--<p>Click the thumbnail for photo album.</p>-->
             </div>
       
 

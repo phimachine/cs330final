@@ -1,9 +1,11 @@
-var searchLocation="San Bernadino"
-var searchTerm="dinner"
-
 function searchClicked(){
-
-    searchLocation=document.getElementById('inputLocation').value
-    searchTerm=document.getElementById('inputTerm').value
-    $(window).attr('location',"/googlemaps")
+    let searchLocation=document.getElementById('inputLocation').value
+    let searchTerm=document.getElementById('inputTerm').value
+    document.location.href='googlemaps?location='+searchLocation+"&"+"term="+searchTerm
 }
+
+// $(window).keyup(function(event) {
+//     if (event.keyCode === 13) {
+//         $("#searchButton").click();
+//     }
+// });
