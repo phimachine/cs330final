@@ -21,7 +21,7 @@ def send_img(path):
 def root():
     return send_from_directory('',"search.html")
 
-@app.route('/googlemaps.html')
+@app.route('/googlemaps')
 def googlemaps():
     return send_from_directory("","googlemaps.html")
 

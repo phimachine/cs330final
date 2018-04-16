@@ -1,7 +1,9 @@
+var searchLocation="San Bernadino"
+var searchTerm="dinner"
+
 function searchClicked(){
 
-    let searchLocation=document.getElementById('inputLocation')
-    let searchTerm=document.getElementById('inputTerm')
-    window.location.href = 'googlemaps?term='
-
+    searchLocation=document.getElementById('inputLocation').value
+    searchTerm=document.getElementById('inputTerm').value
+    $(window).attr('location',"/googlemaps")
 }

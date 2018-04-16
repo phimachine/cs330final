@@ -138,7 +138,7 @@ function initMap() {
     // console.log(map)
 
     // Load the stores GeoJSON onto the map.
-    yelpQuery.query(window.searchTerm, window.searchLocation)
+    yelpQuery.query(searchTerm, searchLocation)
     // map.data.loadGeoJson("yelpquery?term="+term+"&location="+location);
 
     // Define the custom marker icons, using the store's "category".
