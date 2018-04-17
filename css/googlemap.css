@@ -1,28 +1,51 @@
-#map {
-height: 100%;
-}
 html, body {
-height: 100%;
-margin: 0;
-padding: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /*.custom-iw .gm-style-iw,*/
 /*.custom-iw .gm-style-iw>div,*/
 /*.custom-iw .gm-style-iw>div>div {*/
-  /*width:100% !important;*/
-  /*max-width:100% !important;*/
+/*width:100% !important;*/
+/*max-width:100% !important;*/
 /*}*/
 /*!** set here the width **!*/
 /*.custom-iw,*/
 /*.custom-iw>div:first-child>div:last-child {*/
-  /*width:342px !important;*/
+/*width:342px !important;*/
 /*}*/
 
 /*.shopcards{*/
-  /*margin-left:320px;*/
-  /*margin-bottom:20px;*/
+/*margin-left:320px;*/
+/*margin-bottom:20px;*/
 /*}*/
+
+#failureAlert{
+  display:none;
+  z-index:77;
+  position:absolute;
+  top:5px;
+  left:50%;
+  width:400px;
+  margin-left:-200px;
+  height:70px;
+
+}
+#failureAlert .btn{
+  display: inline-block;
+  float:left;
+  vertical-align: middle;
+}
+#failureAlert .alert{
+  vertical-align: middle;
+  height:70px;
+  display: inline-block;
+  float:left;
+  width:400px;
+}
+
+
 
 .shopalbum{
   float:left;

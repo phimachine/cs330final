@@ -144,8 +144,8 @@ function initMap() {
     // Create the map.
     // TODO need to initiate the view at correct position.
     const map = new google.maps.Map(document.getElementsByClassName('map')[0], {
-        zoom: 7,
-        center: {lat: 52.632469, lng: -1.689423},
+        zoom: 4,
+        center: {lat: 41.850033, lng:  -87.6500523},
         styles: mapStyle
     });
 
@@ -222,13 +222,20 @@ function initMap() {
             <div class=\"shopalbum\">
                 <img src=\"${imageUrl}\">
                 <!--<p>Click the thumbnail for photo album.</p>-->
+
             </div>
       
 
             <div class=\"shopcard\">
                 <h2>${name}<br/>
-                <img src=\"${rating_png}\"><br/>
+                <img src=\"${rating_png}\">                  
+                <!--<div>                -->
+                <!--<button style="margin-top:10px;" class="btn btn-primary align-middle" type="button" onclick="document.location.href='/';">Go back</button>-->
+                <!--</div>-->
+                
+                <br/>
                 </h2>
+                              
                 
                 <p>
                 <b>Price:</b> ${price}<br/>
@@ -241,6 +248,8 @@ function initMap() {
                     <b>Google Streetview:</b><br/>
                     <img src=\"https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}\">
                 </div>
+
+
             </div>
         `
 

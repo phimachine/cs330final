@@ -16,7 +16,14 @@ class YelpQuery {
             .then(function (response){
                 return response.json()
             })
-            .catch(error => console.error("error: ", error))
+            .catch(error => {
+                if (error.name=="SyntaxError"){
+                    this.noquery(term,location)
+                    return
+                }else{
+                    console.error("error: ", error)
+                }
+            })
             .then(myJson=>{
                 this.map.data.addGeoJson(myJson)
                 // console.log("addGeoJson",myJson)
@@ -29,4 +36,19 @@ class YelpQuery {
                 this.map.setZoom(13)
             })
     }
+
+    noquery(term,location){
+        // let map=document.getElementsByClassName('map')[0]
+        // $(map).ready(function(){
+        //     let box=document.getElementsByClassName("gmnoprint")[0]
+        //     let hei=window.getComputedStyle(box).getPropertyValue("height")
+        //     console.log(hei)
+        //     $('#failureAlert').show()
+        // })
+
+        $('#failureAlert').show()
+
+    }
+
+
 }
