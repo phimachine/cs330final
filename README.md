@@ -25,6 +25,8 @@ WTForm.
 WTForm.
 
 ### Restaurant presentation.
+Templates.
+
 It's better to have the map information presented as a panel on the left or right.
 
 There should be a "I've been there" button to click on.

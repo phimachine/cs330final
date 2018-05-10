@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Country Query{% endblock %}
+{% block navbar %}
+<nav class="navbar navbar-default">
+<ul class="nav navbar-nav">
+    <li>      <a class="navbar-brand" href="/">Country Query</a>
+</li>
+</ul>
+<button type="button" style="float:right; margin-right:20px" class="btn btn-default navbar-btn">Sign in</button>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="text-center container">
+    <h1>Country Query</h1>
+</div>
+
+{{ wtf.quick_form(form,form_type='horizontal',horizontal_columns=('sm',4,4),button_map={'submit': 'primary'}) }}
+    {% endblock %}}
