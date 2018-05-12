@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}Country Query{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/floating-labels.css">
+{%endblock%}
+
 {% block navbar %}
 <nav class="navbar navbar-default">
 <ul class="nav navbar-nav">
@@ -17,4 +23,13 @@
 </div>
 
 {{ wtf.quick_form(form,form_type='horizontal',horizontal_columns=('sm',4,4),button_map={'submit': 'primary'}) }}
-    {% endblock %}}
+{% endblock %}}
+
+{% block script%}
+<script
+        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="js/search.js"></script>
+{% endblock %}
