@@ -15,7 +15,7 @@ app.secret_key = 'jasonhu'
 class searchForm(Form):
     location = StringField(label="Location")
     term = StringField("Search Term")
-    submit =SubmitField("Find some restaurants")
+    # submit =SubmitField("Find some restaurants")
 
 @app.route('/')
 # the root should be a search engine that gives an opportunity to log in.
