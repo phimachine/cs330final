@@ -17,7 +17,7 @@ class searchForm(Form):
     term = StringField("Search Term")
     # submit =SubmitField("Find some restaurants")
 
-@app.route('/')
+@app.route('/oldsearch')
 # the root should be a search engine that gives an opportunity to log in.
 def root():
     form=searchForm()
