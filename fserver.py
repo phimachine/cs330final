@@ -12,15 +12,20 @@ Bootstrap(app)
 app.debug=True
 app.secret_key = 'jasonhu'
 
-class searchForm(Form):
-    location = StringField(label="Location")
-    term = StringField("Search Term")
-    # submit =SubmitField("Find some restaurants")
+class SearchForm(Form):
+    location = StringField(label="Location",render_kw={'autofocus': True, 'required':True , 'placeholder':'Location'})
+    term = StringField(label="Search Term",render_kw={"required":True, 'placeholder':'Search Term'})
+    submit =SubmitField("Find some restaurants")
 
-@app.route('/')
-# the root should be a search engine that gives an opportunity to log in.
+@app.route("/")
 def root():
-    form=searchForm()
+    form=SearchForm()
+    return render_template("testsearch.html",form=form)
+
+@app.route('/oldroot')
+# the root should be a search engine that gives an opportunity to log in.
+def oldroot():
+    form=SearchForm()
     if form.validate_on_submit():
         countrytable=()
         return render_template('restaurant.html', countrytable=countrytable,form=form)
