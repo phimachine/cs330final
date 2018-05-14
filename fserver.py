@@ -5,7 +5,6 @@ from flask_wtf import Form
 from wtforms import SelectField, DecimalField, BooleanField, SubmitField, StringField
 from wtforms.validators import DataRequired
 from flask_bootstrap import Bootstrap
-import query
 
 app=Flask(__name__,static_url_path="")
 Bootstrap(app)
@@ -17,11 +16,15 @@ class SearchForm(Form):
     term = StringField(label="Search Term",render_kw={"required":True, 'placeholder':'Search Term'})
     submit =SubmitField("Find some restaurants")
 
+class yelpImage():
+    imgsrc='yelp_logo.png'
+    alt="yelp logo"
 
 @app.route("/")
 def root():
+    image=yelpImage()
     form=SearchForm()
-    return render_template("testsearch.html",form=form)
+    return render_template("testsearch.html",form=form,images=[image])
 
 @app.route('/oldroot')
 # the root should be a search engine that gives an opportunity to log in.
