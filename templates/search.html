@@ -7,7 +7,11 @@
 <link rel="stylesheet" href="css/floating-labels.css">
 {%endblock%}
 
+<<<<<<< HEAD
 {% block navbar %}
+=======
+<!-- {% block navbar %}
+>>>>>>> bb34739e2d82208f72f7a339451d70f267f0f6d6
 <nav class="navbar navbar-default">
 <ul class="nav navbar-nav">
     <li>      <a class="navbar-brand" href="/">Country Query</a>
@@ -15,13 +19,12 @@
 </ul>
 <button type="button" style="float:right; margin-right:20px" class="btn btn-default navbar-btn">Sign in</button>
 </nav>
-{% endblock %}
+{% endblock %} -->
 
 {% block content %}
 <div class="text-center container">
     <h1>Country Query</h1>
 </div>
-
 {{ wtf.quick_form(form,form_type='horizontal',horizontal_columns=('sm',4,4),button_map={'submit': 'primary'}) }}
 {% endblock %}}
 

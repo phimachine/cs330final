@@ -13,9 +13,9 @@ app.debug=True
 app.secret_key = 'jasonhu'
 
 class searchForm(Form):
-    location = StringField("Location")
+    location = StringField(label="Location")
     term = StringField("Search Term")
-    submit =SubmitField("Find some restaurants")
+    # submit =SubmitField("Find some restaurants")
 
 @app.route('/')
 # the root should be a search engine that gives an opportunity to log in.
@@ -24,7 +24,7 @@ def root():
     if form.validate_on_submit():
         countrytable=()
         return render_template('restaurant.html', countrytable=countrytable,form=form)
-    return render_template('search.html', form=form)
+    return render_template('testsearch.html', form=form)
 
 @app.route('/googlemaps')
 def googlemaps():
@@ -42,8 +42,6 @@ def query():
     res=Response(geojson)
     res.headers['Content-type'] = 'application/json'
     return res
-
-
 
 @app.route('/js/<path:path>')
 def send_js(path):
