@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% import "searchwtf.html" as wtf %}
+{% set signup=True%}
+
+
 {% block title %}Find restaurants{% endblock %}
 
 {% block styles%}
@@ -20,6 +23,6 @@
 </div >
 {% endfor %}
 <div class="row">
-{{ wtf.slow_form(form,form_type='inline',horizontal_columns=('sm',4,4),button_map={'submit': 'primary'}) }}
+{{ wtf.slow_form(form,form_type='inline',horizontal_columns=('sm',4,4),button_map={'submit': 'primary'}, search=True) }}
 </div>
 {% endblock %}
