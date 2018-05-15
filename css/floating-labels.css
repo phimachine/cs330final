@@ -3,10 +3,7 @@
   --input-padding-y: .75rem;
 }
 
-html,
-body {
-  height: 100%;
-}
+
 
 body {
   display: -ms-flexbox;
