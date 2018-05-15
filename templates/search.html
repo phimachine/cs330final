@@ -27,7 +27,7 @@
 </div >
 {% endfor %}
 <div class="row">
-{{ wtf.slow_form(form,form_type='inline',horizontal_columns=('sm',4,4),button_map={'search': 'danger'}, search=True
+{{ wtf.slow_form(form,action="/maps",form_type='inline',horizontal_columns=('sm',4,4),button_map={'search': 'primary'}, search=True
   ,method='GET') }}
 </div>
 {% endblock %}

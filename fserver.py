@@ -36,7 +36,7 @@ def login():
     secondaryButton=SecondaryButton()
     return render_template("signin.html",form=form,images=[image],sb=secondaryButton)
 
-@app.route("/",methods=['GET'])
+@app.route("/")
 def search():
     image=yelpImage()
     form=SearchForm()
@@ -51,8 +51,10 @@ def search():
 #         return render_template('restaurant.html', countrytable=countrytable,form=form)
 #     return render_template('search.html', form=form)
 
-@app.route('/googlemaps')
+@app.route('/maps',methods=["GET"])
 def googlemap2s():
+    term=request.args.get("term")
+    location=request.args.get("location")
     return render_template("googlemaps.html")
 
 @app.route('/example/<path:path>')
