@@ -16,12 +16,27 @@ class SearchForm(Form):
     term = StringField(label="Search Term",render_kw={"required":True, 'placeholder':'Search Term'})
     submit =SubmitField("Find some restaurants")
 
+class LoginForm(Form):
+    email = StringField(label="Email",render_kw={"type":"email", 'autofocus': True, 'required':True , 'placeholder':'Location'})
+    password = StringField(label="Password",render_kw={"type":"password","required":True, 'placeholder':'Search Term'})
+    register = SubmitField("Register")
+    login= SubmitField("Login")
+
 class yelpImage():
     imgsrc='yelp_logo.png'
     alt="yelp logo"
 
 @app.route("/")
-def root():
+def login():
+    image=yelpImage()
+    form=LoginForm()
+    class SecondaryButton():
+        text="hello"
+    secondaryButton=SecondaryButton()
+    return render_template("login.html",form=form,images=[image],sb=secondaryButton)
+
+@app.route("/search")
+def search():
     image=yelpImage()
     form=SearchForm()
     return render_template("search.html",form=form,images=[image])

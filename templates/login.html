@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import "searchwtf.html" as wtf %}
+{% block title %}Find restaurants{% endblock %}
+
+{% block styles%}
+  {{ super() }}
+  <link rel="stylesheet" href="css/floating-labels.css">
+{% endblock %}
+
+{% block scripts%}
+  {{super()}}
+  <script src="js/search.js"></script>
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+  {{ super() }}
+  {% for image in images: %}
+    <div class="row">
+      <img src="../img/{{ image.imgsrc }}" class="form-image align-self-center col-md-4" alt={{ image.alttext }} />
+    </div >
+  {% endfor %}
+  <div class="row">
+    {{ wtf.slow_form(form,form_type='inline',extra_classes="col-4",horizontal_columns=('sm',4,4),button_map={'submit': 'primary'},
+            search=False) }}
+  </div>
+{% endblock %}

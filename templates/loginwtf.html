@@ -144,8 +144,7 @@ enctype=None,
 button_map={},
 id="",
 novalidate=False,
-render_kw={},
-search=True) %}
+render_kw={}) %}
   {#-
 action="" is what we want, from http://www.ietf.org/rfc/rfc2396.txt:
 
@@ -196,28 +195,16 @@ used to be able to set values outside of it #}
   >
     {{ form.hidden_tag() }}
     {{ form_errors(form, hiddens='only') }}
-  {% if search %}
-    <div class="form-row">
-    {%  endif %}
       {%- for field in form %}
         {% if not field.type == 'SubmitField' %}
           {% if not bootstrap_is_hidden_field(field)%}
-              {% if search %}
-            <div class="col">
-            {% endif %}
               {{ form_field(field,
       form_type=form_type,
       horizontal_columns=horizontal_columns,
       button_map=button_map) }}
-            {% if search %}
-            </div>
-              {% endif %}
           {%- endif %}
         {%- endif %}
       {%- endfor %}
-  {% if search %}
-    </div>
-  {% endif %}
 
     {%- for field in form %}
       {% if field.type == 'SubmitField' %}
