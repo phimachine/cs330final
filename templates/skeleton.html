@@ -19,12 +19,13 @@
   </head>
   <body{% block body_attribs %}{% endblock body_attribs %}>
     {% block body -%}
-
-    <div class="container-fluid">
-    {% block header %}
-    {%- endblock header %}
-    {% block content -%}
-    {%- endblock content %}
+      {% block sidebar -%}
+      {%- endblock sidebar %}
+    <div id="content">
+      {% block header -%}
+      {%- endblock header %}
+      {% block content -%}
+      {%- endblock content %}
     </div>
 
     {% block scripts %}
