@@ -14,7 +14,7 @@ app.secret_key = 'jasonhu'
 class SearchForm(Form):
     location = StringField(label="Location",render_kw={'autofocus': True, 'required':True , 'placeholder':'Location'})
     term = StringField(label="Search Term",render_kw={"required":True, 'placeholder':'Search Term'})
-    submit =SubmitField("Find some restaurants")
+    search =SubmitField("Find some restaurants")
 
 class LoginForm(Form):
     email = StringField(label="Email",render_kw={"type":"email", 'autofocus': True, 'required':True , 'placeholder':'Location'})
@@ -27,17 +27,16 @@ class yelpImage():
     imgsrc='yelp_logo.png'
     alt="yelp logo"
 
-@app.route("/login")
-@app.route("/")
+@app.route("/signin",methods=["GET","POST"])
 def login():
     image=yelpImage()
     form=LoginForm()
     class SecondaryButton():
         text="hello"
     secondaryButton=SecondaryButton()
-    return render_template("login.html",form=form,images=[image],sb=secondaryButton)
+    return render_template("signin.html",form=form,images=[image],sb=secondaryButton)
 
-@app.route("/search")
+@app.route("/",methods=['GET'])
 def search():
     image=yelpImage()
     form=SearchForm()
@@ -53,7 +52,7 @@ def search():
 #     return render_template('search.html', form=form)
 
 @app.route('/googlemaps')
-def googlemaps():
+def googlemap2s():
     return render_template("googlemaps.html")
 
 @app.route('/example/<path:path>')

@@ -15,14 +15,19 @@
 <script src="js/search.js"></script>
 {% endblock %}
 
+{% block signinbutton %}
+        <a class="btn btn-sm btn-secondary" href="/signin">Sign up & Log in</a>
+{% endblock %}
+
 {% block content %}
 {{ super() }}
 {% for image in images: %}
 <div class="row">
-<img src="../img/{{ image.imgsrc }}" class="form-image align-self-center col-md-4" alt={{ image.alttext }} />
+<img src="../img/{{ image.imgsrc }}" class="form-image align-self-center col-sm-4" alt={{ image.alttext }} />
 </div >
 {% endfor %}
 <div class="row">
-{{ wtf.slow_form(form,form_type='inline',horizontal_columns=('sm',4,4),button_map={'submit': 'primary'}, search=True) }}
+{{ wtf.slow_form(form,form_type='inline',horizontal_columns=('sm',4,4),button_map={'search': 'danger'}, search=True
+  ,method='GET') }}
 </div>
 {% endblock %}

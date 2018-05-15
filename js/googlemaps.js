@@ -157,6 +157,8 @@ function initMap() {
     // Load the stores GeoJSON onto the map.
     let searchTerm=getParameterByName('term')
     let searchLocation=getParameterByName('location')
+    searchTerm="dinner"
+    searchLocation="New York"
     yelpQuery.query(searchTerm, searchLocation)
     console.log("yelpQuery.query("+searchTerm+","+searchLocation+")")
     // map.data.loadGeoJson("yelpquery?term="+term+"&location="+location);
