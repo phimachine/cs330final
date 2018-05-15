@@ -18,7 +18,8 @@ class SearchForm(Form):
 
 class LoginForm(Form):
     email = StringField(label="Email",render_kw={"type":"email", 'autofocus': True, 'required':True , 'placeholder':'Location'})
-    password = StringField(label="Password",render_kw={"type":"password","required":True, 'placeholder':'Search Term'})
+    password = StringField(label="Password",render_kw={"type":"password","required":True, 'placeholder':'Password'})
+    confirmpassword = StringField(label="Confirm Password",render_kw={"type":"password","required":True, 'placeholder':'Confirm password'})
     register = SubmitField("Register")
     login= SubmitField("Login")
 
@@ -26,6 +27,7 @@ class yelpImage():
     imgsrc='yelp_logo.png'
     alt="yelp logo"
 
+@app.route("/login")
 @app.route("/")
 def login():
     image=yelpImage()
@@ -52,7 +54,7 @@ def search():
 
 @app.route('/googlemaps')
 def googlemaps():
-    return send_from_directory("","googlemaps.html")
+    return render_template("googlemaps.html")
 
 @app.route('/example/<path:path>')
 def sends_src(path):

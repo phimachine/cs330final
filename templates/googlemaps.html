@@ -1,0 +1,32 @@
+{%  extends "base.html" %}
+{%  block title %}
+  Restaurant Locator
+{%  endblock %}
+{% block styles %}
+  {{ super() }}
+  <link href="../css/googlemap.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="map"></div>
+
+{#<div class="container-fluid" id="failureAlert" style="display: none;">#}
+{#  <div class="row alert alert-warning alert-dismissable">#}
+{#    <div class="row">#}
+{#      <div class="col-8 align-middle">Query returned no results.#}
+{#      </div>#}
+{#      <button class="col-4 btn btn-primary align-middle" type="button" onclick="document.location.href='/';">Go back</button>#}
+{#    </div>#}
+{#  </div>#}
+{#</div>#}
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+<script src="../js/search.js"></script>
+<script src="../js/yelpAPI.js"></script>
+<script src="../js/googlemaps.js"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsidkmuLavmoPyURZMxIyBZ0_lB4XqUAI&callback=initMap"></script>
+{% endblock %}

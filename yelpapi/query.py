@@ -21,6 +21,8 @@ import requests
 import sys
 import urllib
 import platform
+import os
+from pathlib import Path
 
 
 # This client code can run on Python 2.x or 3.x.  Your imports can be
@@ -43,8 +45,8 @@ except ImportError:
 # You can find it on
 # https://www.yelp.com/developers/v3/manage_app
 API_KEY= None
-
-with open('yelp.api','r') as yelp_api:
+apipath=Path(__file__).resolve().parents[1]/"yelp.api"
+with open(apipath,'r') as yelp_api:
     API_KEY=yelp_api.readline()
 API_KEY=API_KEY.strip()
 
@@ -141,7 +143,7 @@ def query_api(term, location):
 
 
 class NoYelpBusiness(Exception):
-    def __init__(self,message,errors):
+    def __init__(self,message):
         super(NoYelpBusiness, self).__init__(message)
 
 def my_query(term=DEFAULT_TERM, location=DEFAULT_LOCATION,verbose=False):
@@ -156,7 +158,7 @@ def my_query(term=DEFAULT_TERM, location=DEFAULT_LOCATION,verbose=False):
     businesses = response.get('businesses')
 
     if not businesses:
-        raise NoYelpBusiness(u'No businesses for {0} in {1} found.'.format(term, location))
+        raise NoYelpBusiness('No businesses for {0} in {1} found.'.format(term, location))
         return None
 
     business_id = businesses[0]['id']

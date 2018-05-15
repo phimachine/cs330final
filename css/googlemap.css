@@ -4,6 +4,8 @@ html, body {
   padding: 0;
 }
 
+.map {height: 100%;}
+
 /*.custom-iw .gm-style-iw,*/
 /*.custom-iw .gm-style-iw>div,*/
 /*.custom-iw .gm-style-iw>div>div {*/
