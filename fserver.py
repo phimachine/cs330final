@@ -27,6 +27,12 @@ class yelpImage():
     imgsrc='yelp_logo.png'
     alt="yelp logo"
 
+@app.route("/searchsb")
+def searh():
+    image=yelpImage()
+    form=SearchForm()
+    return render_template("searchsb.html",images=[image],form=form)
+
 @app.route("/signin",methods=["GET","POST"])
 def login():
     image=yelpImage()

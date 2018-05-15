@@ -3,7 +3,11 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
 {#      <div class="blog-header row flex-nowrap" id="bs-example-navbar-collapse-1">#}
-        <div class="col-sm-4 offset-sm-4 d-flex justify-content-center align-items-center">
+        <div class="col-sm-4">
+            {% block headerslot -%}
+            {%- endblock headerslot %}
+        </div>
+        <div class="col-sm-4 d-flex justify-content-center align-items-center">
           <a class="blog-header-logo text-dark" href="https://getbootstrap.com/docs/4.0/examples/blog/#">Find Retaurants</a>
         </div>
         <div class="col-sm-4 d-flex justify-content-end align-items-center">
@@ -16,15 +20,9 @@
 {#      </div>#}
     </div>
   </nav>
-
 {% endblock %}
 
 {% block styles %}
   {{ super() }}
   <link href="/css/header.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-{% endblock %}
-
-{% block scripts %}
-  {{ super() }} <script src="js/sidebar.js"></script>
 {% endblock %}

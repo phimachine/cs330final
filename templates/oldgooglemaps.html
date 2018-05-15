@@ -5,7 +5,6 @@
 {% block styles %}
   {{ super() }}
   <link href="../css/googlemap.css" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 {% endblock %}
 
 {% block signinbutton %}
@@ -30,14 +29,10 @@
 {#  </div>#}
 {##}
 {#</div>#}
-
-{% block headerslot %}
 <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
-<i class="glyphicon glyphicon-align-left"></i>
-<span>Toggle Sidebar</span>
+  <i class="glyphicon glyphicon-align-left"></i>
+  <span>Toggle Sidebar</span>
 </button>
-{% endblock %}
-
 
 {% endblock %}
 
@@ -49,7 +44,6 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsidkmuLavmoPyURZMxIyBZ0_lB4XqUAI&callback=initMap">
 </script>
-<script src="js/sidebar.js"></script>
 {%endblock%}
 
 {% block sidebar %}
