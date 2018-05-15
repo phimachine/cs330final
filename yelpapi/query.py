@@ -43,7 +43,8 @@ except ImportError:
 # You can find it on
 # https://www.yelp.com/developers/v3/manage_app
 API_KEY= None
-with open('/yelp.api','r') as yelp_api:
+
+with open('yelp.api','r') as yelp_api:
     API_KEY=yelp_api.readline()
 API_KEY=API_KEY.strip()
 
