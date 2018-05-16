@@ -3,7 +3,7 @@ $(document).ready(function () {
         theme: "minimal"
     });
 
-    $('#sidebarCollapse').on('click', function () {
+    $('#sidebar-toggle').on('click', function () {
         $('#sidebar, #content, #sidebar-toggle').toggleClass('active');
         $('.collapse.in').toggleClass('in');
         $('a[aria-expanded=true]').attr('aria-expanded', 'false');
