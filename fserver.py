@@ -163,7 +163,7 @@ def search():
     form=SearchForm()
     if form.validate_on_submit():
         print("validated on submit")
-    return render_template("searchwithmap.html",form=form,images=[image])
+    return render_template("search.html",form=form,images=[image])
 
 
 @app.route("/search")

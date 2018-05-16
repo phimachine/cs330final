@@ -13,6 +13,6 @@
     cursor: default; /* Add a pointer on hover */
 }
 
-#content container-fluid{
+#content .container-fluid{
   z-index:150;
 }

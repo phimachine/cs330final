@@ -199,75 +199,84 @@ function initMap() {
     //     <p><img src="https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}"></p>
     //   </div>
     // `;
-
-    // TODO get the html right
-    map.data.addListener('click', event => {
-        let date = new Date()
-
-        const category = event.feature.getProperty('category').join("/")
-        const name = event.feature.getProperty('name')
-        const todayhours = event.feature.getProperty('hours')[0]["open"][date.getDay()]
-        console.log(todayhours)
-        const todayhoursstring = (todayhours['start'].slice(0, 2) + ":" + todayhours['start'].slice(2, 4) +
-            "-" + todayhours['end'].slice(0, 2) + ":" + todayhours['end'].slice(2, 4))
-        const imageUrl = event.feature.getProperty('image_url')
-        console.log(imageUrl)
-        const phone = event.feature.getProperty('phone')
-        const price = event.feature.getProperty('price')
-        const rating = ratingToString(event.feature.getProperty('rating'))
-        console.log(rating)
-        const rating_png="img/yelp_stars/extra_large/extra_large_"+rating+"@3x.png"
-        const address = event.feature.getProperty('location')['display_address'].join(", ")
-        const position = event.feature.getGeometry().get();
-        const description = "foo bar"
-        // from html:
-        const content = sanitizeHTML`
-
-            <div class=\"shopalbum\">
-                <img src=\"${imageUrl}\">
-                <!--<p>Click the thumbnail for photo album.</p>-->
-
-            </div>
-      
-
-            <div class=\"shopcard\">
-                <h2>${name}<br/>
-                <img src=\"${rating_png}\">                  
-                <!--<div>                -->
-                <!--<button style="margin-top:10px;" class="btn btn-primary align-middle" type="button" onclick="document.location.href='/';">Go back</button>-->
-                <!--</div>-->
-                
-                <br/>
-                </h2>
-                              
-                
-                <p>
-                <b>Price:</b> ${price}<br/>
-                <b>Category:</b> ${category}<br/>
-                <b>Today's hour:</b> ${todayhoursstring}<br/>
-                <b>Phone:</b> ${phone}<br/>
-                <b>Address:</b> ${address}<br/>
-                </p>
-                <div class="gsv">
-                    <b>Google Streetview:</b><br/>
-                    <img src=\"https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}\">
-                </div>
+    //
 
 
-            </div>
-        `
 
-        infoWindow.setContent(content);
-        infoWindow.setPosition(position);
-        infoWindow.open(map);
+    // TODO modify the event listener to display information
+    // TODO this is where AJAX happens, so every click on the marker, it needs to be an ajax query to the server
+    // TODO response.data will be displayed with javascript, not flask.
+    // TODO in this case, the geojson passed to the browser does not need to contain that many features.
+    // TODO modify so that it only returns the id.
 
 
-        google.maps.event.addListener(infoWindow,'domready',function(){
-            $('#div-main-infoWindow')//the root of the content
-                .closest('.gm-style-iw')
-                .parent().addClass('custom-iw')
-            console.log('added')
-        });
-    });
+    // map.data.addListener('click', event => {
+    //     let date = new Date()
+    //
+    //     const category = event.feature.getProperty('category').join("/")
+    //     const name = event.feature.getProperty('name')
+    //     const todayhours = event.feature.getProperty('hours')[0]["open"][date.getDay()]
+    //     console.log(todayhours)
+    //     const todayhoursstring = (todayhours['start'].slice(0, 2) + ":" + todayhours['start'].slice(2, 4) +
+    //         "-" + todayhours['end'].slice(0, 2) + ":" + todayhours['end'].slice(2, 4))
+    //     const imageUrl = event.feature.getProperty('image_url')
+    //     console.log(imageUrl)
+    //     const phone = event.feature.getProperty('phone')
+    //     const price = event.feature.getProperty('price')
+    //     const rating = ratingToString(event.feature.getProperty('rating'))
+    //     console.log(rating)
+    //     const rating_png="img/yelp_stars/extra_large/extra_large_"+rating+"@3x.png"
+    //     const address = event.feature.getProperty('location')['display_address'].join(", ")
+    //     const position = event.feature.getGeometry().get();
+    //     const description = "foo bar"
+    //     // from html:
+    //     const content = sanitizeHTML`
+    //
+    //         <div class=\"shopalbum\">
+    //             <img src=\"${imageUrl}\">
+    //             <!--<p>Click the thumbnail for photo album.</p>-->
+    //
+    //         </div>
+    //
+    //
+    //         <div class=\"shopcard\">
+    //             <h2>${name}<br/>
+    //             <img src=\"${rating_png}\">
+    //             <!--<div>                -->
+    //             <!--<button style="margin-top:10px;" class="btn btn-primary align-middle" type="button" onclick="document.location.href='/';">Go back</button>-->
+    //             <!--</div>-->
+    //
+    //             <br/>
+    //             </h2>
+    //
+    //
+    //             <p>
+    //             <b>Price:</b> ${price}<br/>
+    //             <b>Category:</b> ${category}<br/>
+    //             <b>Today's hour:</b> ${todayhoursstring}<br/>
+    //             <b>Phone:</b> ${phone}<br/>
+    //             <b>Address:</b> ${address}<br/>
+    //             </p>
+    //             <div class="gsv">
+    //                 <b>Google Streetview:</b><br/>
+    //                 <img src=\"https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}\">
+    //             </div>
+    //
+    //
+    //         </div>
+    //     `
+    //
+    //     infoWindow.setContent(content);
+    //     infoWindow.setPosition(position);
+    //     infoWindow.open(map);
+    //
+    //
+    //     google.maps.event.addListener(infoWindow,'domready',function(){
+    //         $('#div-main-infoWindow')//the root of the content
+    //             .closest('.gm-style-iw')
+    //             .parent().addClass('custom-iw')
+    //         console.log('added')
+    //     });
+    // });
 
 }
