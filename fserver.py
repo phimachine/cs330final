@@ -5,11 +5,16 @@ from flask_wtf import Form
 from wtforms import SelectField, DecimalField, BooleanField, SubmitField, StringField
 from wtforms.validators import DataRequired
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 
 app=Flask(__name__,static_url_path="")
 Bootstrap(app)
 app.debug=True
 app.secret_key = 'jasonhu'
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
 
 class SearchForm(Form):
     location = StringField(label="Location",render_kw={'autofocus': True, 'required':True , 'placeholder':'Location'})
@@ -26,6 +31,10 @@ class LoginForm(Form):
 class yelpImage():
     imgsrc='yelp_logo.png'
     alt="yelp logo"
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 @app.route("/searchsb")
 def searh():
