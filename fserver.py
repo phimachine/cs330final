@@ -1,12 +1,12 @@
 from flask_cors import CORS
 from datetime import datetime
 from yelp_query import *
-from flask import Flask, render_template, send_from_directory, Response, request, flash
+from flask import Flask, render_template, send_from_directory, Response, request, flash, redirect, url_for
 from flask_wtf import Form
 import flask_wtf
 from wtforms import SelectField, DecimalField, BooleanField, SubmitField, StringField, validators, ValidationError
 from flask_bootstrap import Bootstrap
-from flask_login import LoginManager
+from flask_login import LoginManager, login_user , logout_user , current_user , login_required
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -17,6 +17,7 @@ app.secret_key = 'jasonhu'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/database.db'#'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
 
 class SearchForm(Form):
@@ -58,6 +59,8 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % (self.username)
+
+db.create_all()
 
 
 @login_manager.user_loader
@@ -118,12 +121,21 @@ def login():
     if request.method == 'POST' and form.validate():
         if form.confirm.data==None:
             # this is a login request
+            email = form.email
+            password = form.password
+            registered_user = User.query.filter_by(email=email, password=password).first()
+            if registered_user is None:
+                flash('Username or Password is invalid', 'error')
+                return
+            login_user(registered_user)
+            flash('Logged in successfully')
+            return redirect(request.args.get('next') or url_for('index'))
         else:
             # this is a registeration request
             user = User(form.email.data, form.password.data)
             db.session.add(user)
             db.session.commit()
-            return None
+            return redirect("/")
     return render_template('login.html', form=form, images=[image])
 
 def oldlogin():
