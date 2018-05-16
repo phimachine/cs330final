@@ -1,17 +1,14 @@
 {% extends "base.html" %}
-{% block body %}
-<div id="main" class="container">
-    <h2>All Items</h2>
-    <table class="table table-hover">
-      <tr>
-        <th>#
-        <th>Title
-        <th>Date
-        <th>Text
-    </table>
-    <p>
-      <a href="{{ url_for('new') }}" class="btn btn-large btn-primary">New Todo</a>
- 
- 
-</div>
+{% block content %}
+{% if session['logged_in'] %}
+
+{#    Do Stuffs#}
+
+{% else %}
+<p>Not login!</p>
+
+<a href="/login">Login</a>
+<a href="/register">Register</a>
+
+{% endif %}
 {% endblock %}
