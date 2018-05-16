@@ -1,8 +1,8 @@
 from flask_cors import CORS
 from yelp_query import *
 from flask import Flask,session, request, flash, url_for, redirect, render_template, abort ,g, send_from_directory
-from flask.ext.login import login_user , logout_user , current_user , login_required
-from flask.ext.login import LoginManager
+from flask_login import login_user , logout_user , current_user , login_required
+from flask_login import LoginManager
 from flask_wtf import Form
 from wtforms import SelectField, DecimalField, BooleanField, SubmitField, StringField
 from wtforms.validators import DataRequired
