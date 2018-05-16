@@ -8,6 +8,7 @@ from wtforms import SelectField, DecimalField, BooleanField, SubmitField, String
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager, login_user , logout_user , current_user , login_required
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 
 
 app=Flask(__name__,static_url_path="")
@@ -25,12 +26,9 @@ class SearchForm(Form):
     term = StringField(label="Search Term",render_kw={"required":True, 'placeholder':'Search Term'})
     search =SubmitField("Find some restaurants")
 
-
-
 class yelpImage():
     imgsrc='yelp_logo.png'
     alt="yelp logo"
-
 
 class User(db.Model):
     __tablename__ = "users"
@@ -55,7 +53,7 @@ class User(db.Model):
         return False
 
     def get_id(self):
-        return self.id.encode('utf-8')
+        return self.id
 
     def __repr__(self):
         return '<User %r>' % (self.username)
@@ -93,7 +91,7 @@ class MyEqualTo(object):
             other = form[self.fieldname]
         except KeyError:
             raise ValidationError(field.gettext("Invalid field name '%s'.") % self.fieldname)
-        if other.data!=None and field.data != other.data:
+        if other.data!="" and field.data != other.data:
             d = {
                 'other_label': hasattr(other, 'label') and other.label.text or self.fieldname,
                 'other_name': self.fieldname
@@ -109,8 +107,7 @@ class LoginForm(Form):
     email = StringField(label="Email",render_kw={"type":"email", 'autofocus': True, 'required':True , 'placeholder':'Email'})
     password = StringField(label="Password",validators=[MyEqualTo('confirm', message='Passwords must match')],render_kw={"type":"password","required":True, 'placeholder':'Password'})
     confirm = StringField(label="Confirm Password",render_kw={"type":"password", 'placeholder':'Confirm password'})
-    register = SubmitField("Register")
-    login= SubmitField("Login")
+    register = SubmitField("Register or Login")
 
 @app.route("/signin",methods=["GET","POST"])
 def login():
@@ -119,23 +116,28 @@ def login():
     if request.method == 'POST' and not form.validate():
         flash("Passwords don't match.")
     if request.method == 'POST' and form.validate():
-        if form.confirm.data==None:
+        if form.confirm.data=="":
             # this is a login request
-            email = form.email
-            password = form.password
+            email = form.email.data
+            password = form.password.data
             registered_user = User.query.filter_by(email=email, password=password).first()
             if registered_user is None:
                 flash('Username or Password is invalid', 'error')
-                return
+                return render_template('login.html', form=form, images=[image])
             login_user(registered_user)
-            flash('Logged in successfully')
-            return redirect(request.args.get('next') or url_for('index'))
+            # logged in
+            return redirect(request.args.get('next') or url_for('/'))
         else:
-            # this is a registeration request
+            # this is a registration request
             user = User(form.email.data, form.password.data)
-            db.session.add(user)
-            db.session.commit()
-            return redirect("/")
+            try:
+                db.session.add(user)
+                db.session.commit()
+                return redirect("/")
+            except IntegrityError:
+                flash("User exists.")
+                db.session.rollback()
+            return render_template('login.html', form=form, images=[image])
     return render_template('login.html', form=form, images=[image])
 
 def oldlogin():
