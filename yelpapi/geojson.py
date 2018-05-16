@@ -62,21 +62,11 @@ def make_geojson(response):
 
 def getFeat(mykey, response):
     try:
-        feat = {"category": [aliastitle['title'] for aliastitle in response['categories']],
-                "phone": response['display_phone'],
-                "hours": response['hours'],
-                'image_url': response['image_url'],
-                'is_claimed': response['is_claimed'],
-                'is_closed': response['is_closed'],
-                'location': response['location'],
-                'name': response['name'],
-                'photos': response['photos'],
-                'price': response['price'],
-                'rating': response['rating'],
-                'review_count': response['review_count'],
-                'transactions': response['transactions'],
-                'url': response['url']
-                }[mykey]
-        return feat
+        if mykey=="category":
+            return [aliastitle['title'] for aliastitle in response['categories']]
+        elif mykey=="phone":
+            return response['display_phone']
+        else:
+            return response[mykey]
     except KeyError:
         return None

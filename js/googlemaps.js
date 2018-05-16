@@ -161,7 +161,7 @@ function initMap() {
     if (searchTerm!=null & searchLocation!=null){
         yelpQuery.query(searchTerm, searchLocation)
         console.log("yelpQuery.query("+searchTerm+","+searchLocation+")")
-        map.data.loadGeoJson("yelpquery?term="+term+"&location="+location);
+        // map.data.loadGeoJson("yelpquery?term="+term+"&location="+location);
     }
 
 

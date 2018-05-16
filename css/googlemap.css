@@ -7,6 +7,7 @@ html, body {
 .map {
   height: 100%;
   position: static !important;
+  z-index:55;
 }
 
 /*.custom-iw .gm-style-iw,*/

@@ -10,7 +10,6 @@ body {
   /*border-bottom: 4px solid #e5e5e5;*/
   margin:auto;
   background: #ffffff;
-  height:70px
 }
 
 .blog-header-logo {
@@ -64,6 +63,7 @@ a, a:hover, a:focus {
 .navbar {
   z-index:1000;
   padding: 15px 10px;
+  height:80px;
   background: #fff;
   border: none;
   border-radius: 0;
@@ -119,4 +119,13 @@ a, a:hover, a:focus {
   #sidebarCollapse span {
     display: none;
   }
+}
+
+#headerslot{
+}
+
+#headerslot .alert{
+  max-height:50px;
+  margin-bottom:0px;
+  padding:6px 12px;
 }

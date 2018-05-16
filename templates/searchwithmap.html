@@ -1,0 +1,62 @@
+{% extends "headerbase.html" %}
+{% import "searchloginwtf.html" as wtf %}
+{% set signup=True%}
+
+
+{% block title %}Find restaurants{% endblock %}
+
+{% block styles%}
+  {{ super() }}
+  <link href="../css/googlemap.css" rel="stylesheet" type="text/css">
+  <link href="../css/sidebar.css" rel="stylesheet" type="text/css">
+  <link href="../css/header.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="css/floating-labels.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../css/searchwithmap.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block scripts%}
+  {{super()}}
+  <script src="js/search.js"></script>
+  <script src="js/yelpAPI.js"></script>
+  <script src="js/googlemaps.js"></script>
+  <script async defer
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsidkmuLavmoPyURZMxIyBZ0_lB4XqUAI&callback=initMap">
+  </script>
+  <script src="js/sidebar.js"></script>
+  <!-- jQuery Custom Scroller CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+{% endblock %}
+
+{% block signinbutton %}
+  <a class="btn btn-sm btn-secondary" href="/signin">Sign up & Log in</a>
+{% endblock %}
+
+
+
+{% block content %}
+  {{super()}}
+
+  <div class="map"></div>
+  <div id="overlay"></div>
+  <div class="container-fluid">
+    {{ super() }}
+    {% for image in images: %}
+      <div class="row">
+        <img src="../img/{{ image.imgsrc }}" class="form-image align-self-center col-sm-4" alt={{ image.alttext }} />
+      </div >
+    {% endfor %}
+    <div class="row">
+      {{ wtf.slow_form(form,action="/",form_type='inline',horizontal_columns=('sm',4,4),button_map={'search': 'primary'}, search=True
+    ,method='GET') }}
+    </div>
+  </div>
+
+{% endblock %}
+
+
+{% block sidebar %}
+  {% include "sidebar.html" %}
+{% endblock %}

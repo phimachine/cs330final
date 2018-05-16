@@ -163,6 +163,15 @@ def search():
     form=SearchForm()
     if form.validate_on_submit():
         print("validated on submit")
+    return render_template("searchwithmap.html",form=form,images=[image])
+
+
+@app.route("/search")
+def oldsearch():
+    image=yelpImage()
+    form=SearchForm()
+    if form.validate_on_submit():
+        print("validated on submit")
     return render_template("search.html",form=form,images=[image])
 
 # @app.route('/oldroot')
@@ -192,7 +201,6 @@ def query():
         res.headers['Content-type'] = 'application/json'
         return res
     else:
-        flash("No restaurant found.")
         return ('', 204)
 
 @app.route('/js/<path:path>')

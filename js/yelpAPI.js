@@ -54,7 +54,13 @@ class YelpQuery {
         //     $('#failureAlert').show()
         // })
 
-        // $('#failureAlert').show()
+        $('#headerslot').html(`
+            <div class="alert alert-warning d-flex justify-content-between align-items-center">
+              No restaurants found.
+              <button type="button" class="btn btn-secondary text-center" data-dismiss="alert">close</button>
+            </div>
+                    
+        `)
         // No need to do anything.
     }
 
