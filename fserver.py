@@ -121,7 +121,7 @@ def send_img(path):
 #------------------------------------------
 
 @app.route('/login', methods=['GET', 'POST'])
-def login():
+def asdf():
     form = LoginForm()
 
     if form.validate_on_submit():
