@@ -65,11 +65,6 @@ db.create_all()
 def load_user(id):
     return User.query.get(int(id))
 
-@app.route("/searchsb")
-def searh():
-    image=yelpImage()
-    form=SearchForm()
-    return render_template("searchsb.html",images=[image],form=form)
 
 class MyEqualTo(object):
     """
@@ -126,14 +121,14 @@ def login():
                 return render_template('login.html', form=form, images=[image])
             login_user(registered_user)
             # logged in
-            return redirect(request.args.get('next') or url_for('/'))
+            return redirect(request.args.get('next') or url_for('search'))
         else:
             # this is a registration request
             user = User(form.email.data, form.password.data)
             try:
                 db.session.add(user)
                 db.session.commit()
-                return redirect("/")
+                return redirect(url_for("search"))
             except IntegrityError:
                 flash("User exists.")
                 db.session.rollback()
@@ -154,10 +149,20 @@ def oldlogin():
     # flash('User successfully registered')
     # return redirect(url_for('login'))
 
+
+
+@app.route("/searchsb")
+def searh():
+    image=yelpImage()
+    form=SearchForm()
+    return render_template("searchsb.html",images=[image],form=form)
+
 @app.route("/")
 def search():
     image=yelpImage()
     form=SearchForm()
+    if form.validate_on_submit():
+        print("validated on submit")
     return render_template("search.html",form=form,images=[image])
 
 # @app.route('/oldroot')
@@ -170,23 +175,25 @@ def search():
 #     return render_template('search.html', form=form)
 
 @app.route('/maps',methods=["GET"])
-def googlemap2s():
-    term=request.args.get("term")
-    location=request.args.get("location")
+def googlemaps():
     return render_template("googlemaps.html")
 
 @app.route('/example/<path:path>')
 def sends_src(path):
     return send_from_directory("example",path)
 
-@app.route("/yelpquery")
+@app.route("/yelpquery", methods=["GET"])
 def query():
     term=request.args.get("term")
     location=request.args.get("location")
     geojson=yelp(term,location)
-    res=Response(geojson)
-    res.headers['Content-type'] = 'application/json'
-    return res
+    if geojson!=None:
+        res=Response(geojson)
+        res.headers['Content-type'] = 'application/json'
+        return res
+    else:
+        flash("No restaurant found.")
+        return ('', 204)
 
 @app.route('/js/<path:path>')
 def send_js(path):

@@ -12,32 +12,40 @@ class YelpQuery {
         let get_string="/yelpquery?term="+term+"&location="+location
         // console.log(get_string)
         let geoJson=null
+        let self=this
         fetch(get_string,config)
             .then(function (response){
+                if (response.status==204){
+                    self.nonefound(term,location)
+                    console.log("none found")
+                    return null
+                }
                 return response.json()
             })
             .catch(error => {
-                if (error.name=="SyntaxError"){
-                    this.noquery(term,location)
-                    return
-                }else{
-                    console.error("error: ", error)
-                }
+                console.error("error: ", error)
             })
             .then(myJson=>{
-                this.map.data.addGeoJson(myJson)
-                // console.log("addGeoJson",myJson)
-                // coordinates=myJson['geometry']['coordinates']
-                // console.log(myJson['geometry']['coordinates'])
-                let coordinates=myJson['geometry']['coordinates']
-                // LatLng correct,but geoJson has a different coordinate system.
-                // geoJson is longlat and latlng, well, is latlong
-                this.map.setCenter(new google.maps.LatLng(coordinates[1],coordinates[0]))
-                this.map.setZoom(13)
+                console.log(myJson)
+
+                if (myJson==null){
+                    this.nonefound()
+                }else{
+                    this.map.data.addGeoJson(myJson)
+                    // console.log("addGeoJson",myJson)
+                    // coordinates=myJson['geometry']['coordinates']
+                    // console.log(myJson['geometry']['coordinates'])
+                    let coordinates=myJson['geometry']['coordinates']
+                    // LatLng correct,but geoJson has a different coordinate system.
+                    // geoJson is longlat and latlng, well, is latlong
+                    this.map.setCenter(new google.maps.LatLng(coordinates[1],coordinates[0]))
+                    this.map.setZoom(13)
+                }
+
             })
     }
 
-    noquery(term,location){
+    nonefound(term, location){
         // let map=document.getElementsByClassName('map')[0]
         // $(map).ready(function(){
         //     let box=document.getElementsByClassName("gmnoprint")[0]
@@ -46,8 +54,8 @@ class YelpQuery {
         //     $('#failureAlert').show()
         // })
 
-        $('#failureAlert').show()
-
+        // $('#failureAlert').show()
+        // No need to do anything.
     }
 
 

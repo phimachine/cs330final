@@ -158,11 +158,12 @@ function initMap() {
     // Load the stores GeoJSON onto the map.
     let searchTerm=getParameterByName('term')
     let searchLocation=getParameterByName('location')
-    searchTerm="dinner"
-    searchLocation="New York"
-    yelpQuery.query(searchTerm, searchLocation)
-    console.log("yelpQuery.query("+searchTerm+","+searchLocation+")")
-    // map.data.loadGeoJson("yelpquery?term="+term+"&location="+location);
+    if (searchTerm!=null & searchLocation!=null){
+        yelpQuery.query(searchTerm, searchLocation)
+        console.log("yelpQuery.query("+searchTerm+","+searchLocation+")")
+        map.data.loadGeoJson("yelpquery?term="+term+"&location="+location);
+    }
+
 
     // Define the custom marker icons, using the store's "category".
     // Not going to define it for our application just yet.

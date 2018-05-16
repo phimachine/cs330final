@@ -38,20 +38,20 @@ def make_geojson(response):
     json_ret["geometry"]["coordinates"]=coordinates
 
     json_ret["type"]="Feature"
-    feat={"category": [aliastitle['title'] for aliastitle in response['categories']],
-          "phone":response['display_phone'],
-          "hours":response['hours'],
-          'image_url':response['image_url'],
-          'is_claimed':response['is_claimed'],
-          'is_closed':response['is_closed'],
-          'location':response['location'],
-          'name':response['name'],
-          'photos':response['photos'],
-          'price':response['price'],
-          'rating':response['rating'],
-          'review_count':response['review_count'],
-          'transactions':response['transactions'],
-          'url':response['url']
+    feat={"category": getFeat("category",response),
+          "phone":getFeat("phone",response),
+          "hours":getFeat("hours",response),
+          'image_url':getFeat("image_url",response),
+          'is_claimed':getFeat("is_claimed",response),
+          'is_closed':getFeat("is_closed",response),
+          'location':getFeat("location",response),
+          'name':getFeat("name",response),
+          'photos':getFeat("photo",response),
+          'price':getFeat("price",response),
+          'rating':getFeat("rating",response),
+          'review_count':getFeat("review_count",response),
+          'transactions':getFeat("transactions",response),
+          'url':getFeat("url",response)
           }
     json_ret["properties"]=feat
 
@@ -59,3 +59,24 @@ def make_geojson(response):
     with open("yelpapi/geojson.json",'wb') as file:
         pickle.dump(test,file)
     return json.dumps(json_ret)
+
+def getFeat(mykey, response):
+    try:
+        feat = {"category": [aliastitle['title'] for aliastitle in response['categories']],
+                "phone": response['display_phone'],
+                "hours": response['hours'],
+                'image_url': response['image_url'],
+                'is_claimed': response['is_claimed'],
+                'is_closed': response['is_closed'],
+                'location': response['location'],
+                'name': response['name'],
+                'photos': response['photos'],
+                'price': response['price'],
+                'rating': response['rating'],
+                'review_count': response['review_count'],
+                'transactions': response['transactions'],
+                'url': response['url']
+                }[mykey]
+        return feat
+    except KeyError:
+        return None
