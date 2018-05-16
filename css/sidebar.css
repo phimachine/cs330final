@@ -2,7 +2,7 @@
     SIDEBAR STYLE
 ----------------------------------------------------- */
 #sidebar {
-  width: 250px;
+  width: 500px;
   position: fixed;
   top: 0;
   left: 0;
@@ -19,12 +19,12 @@
 /*}*/
 
 #sidebar.active {
-  margin-left: -250px;
+  margin-left: -500px;
 }
 
 #sidebar-toggle{
   position:absolute;
-  left:250px;
+  left:500px;
   top:calc(50% - 25px);
   transition: all 0.3s;
   z-index:1000;
@@ -132,7 +132,7 @@ a.article, a.article:hover {
     CONTENT STYLE
 ----------------------------------------------------- */
 #content {
-  width: calc(100% - 250px);
+  width: calc(100% - 500px);
 
 }
 #content.active {
@@ -145,7 +145,7 @@ a.article, a.article:hover {
 ----------------------------------------------------- */
 @media (max-width: 768px) {
   #sidebar {
-    margin-left: -250px;
+    margin-left: -500px;
   }
   #sidebar.active {
     margin-left: 0;
@@ -154,7 +154,7 @@ a.article, a.article:hover {
     width: 100%;
   }
   #content.active {
-    width: calc(100% - 250px);
+    width: calc(100% - 500px);
   }
   #sidebarCollapse span {
     display: none;
