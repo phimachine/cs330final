@@ -8,9 +8,12 @@
     left: 0;
     height: 100vh;
     z-index: 999;
-    background: #7386D5;
     color: #fff;
     transition: all 0.3s;
+}
+
+#sidebar-content{
+    background: #7386D5;
 }
 
 #sidebar.active {
@@ -123,4 +126,13 @@ a.article, a.article:hover {
     #sidebarCollapse span {
         display: none;
     }
+}
+
+#sidebar-content{
+    width:200px;
+}
+
+.wrapper {
+    display: flex;
+    align-items: stretch;
 }

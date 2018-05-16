@@ -5,6 +5,7 @@
 {% block styles %}
   {{ super() }}
   <link href="../css/googlemap.css" rel="stylesheet" type="text/css">
+  <link href="../css/sidebar.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 {% endblock %}
 
@@ -49,6 +50,8 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsidkmuLavmoPyURZMxIyBZ0_lB4XqUAI&callback=initMap">
 </script>
+<!-- jQuery Custom Scroller CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="js/sidebar.js"></script>
 {%endblock%}
 
