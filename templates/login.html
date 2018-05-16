@@ -24,7 +24,16 @@
     </div >
   {% endfor %}
   <div class="row">
-    {{ wtf.slow_form(form,form_type='inline',extra_classes="col-sm-4",horizontal_columns=('sm',4,4),button_map={'register': 'primary', "login":"secondary"},
+    {{ wtf.slow_form(form,action="/signin",form_type='inline',extra_classes="col-sm-4",horizontal_columns=('sm',4,4),button_map={'register': 'primary', "login":"secondary"},
             search=False, method='POST') }}
   </div>
 {% endblock %}
+
+{% block headerslot -%}
+{% for message in get_flashed_messages() %}
+<div class="alert alert-warning d-flex justify-content-between align-items-center" style="margin-bottom:0; max-height:36px;">
+  {{message}}
+  <button type="button" class="btn btn-secondary text-center" data-dismiss="alert" style="max-height:24px; padding-top:0px"> close</button>
+</div>
+{% endfor %}
+{%- endblock headerslot %}

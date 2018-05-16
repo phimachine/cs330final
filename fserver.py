@@ -1,11 +1,14 @@
 from flask_cors import CORS
+from datetime import datetime
 from yelp_query import *
-from flask import Flask, render_template, send_from_directory, Response, request
+from flask import Flask, render_template, send_from_directory, Response, request, flash
 from flask_wtf import Form
-from wtforms import SelectField, DecimalField, BooleanField, SubmitField, StringField
-from wtforms.validators import DataRequired
+import flask_wtf
+from wtforms import SelectField, DecimalField, BooleanField, SubmitField, StringField, validators, ValidationError
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
+
 
 app=Flask(__name__,static_url_path="")
 Bootstrap(app)
@@ -14,23 +17,48 @@ app.secret_key = 'jasonhu'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-
+db = SQLAlchemy(app)
 
 class SearchForm(Form):
     location = StringField(label="Location",render_kw={'autofocus': True, 'required':True , 'placeholder':'Location'})
     term = StringField(label="Search Term",render_kw={"required":True, 'placeholder':'Search Term'})
     search =SubmitField("Find some restaurants")
 
-class LoginForm(Form):
-    email = StringField(label="Email",render_kw={"type":"email", 'autofocus': True, 'required':True , 'placeholder':'Location'})
-    password = StringField(label="Password",render_kw={"type":"password","required":True, 'placeholder':'Password'})
-    confirmpassword = StringField(label="Confirm Password",render_kw={"type":"password","required":True, 'placeholder':'Confirm password'})
-    register = SubmitField("Register")
-    login= SubmitField("Login")
+
 
 class yelpImage():
     imgsrc='yelp_logo.png'
     alt="yelp logo"
+
+
+class User(db.Model):
+    __tablename__ = "users"
+    id = db.Column('user_id', db.Integer, primary_key=True)
+    username = db.Column('username', db.String(20), unique=True, index=True)
+    password = db.Column('password', db.String(10))
+    email = db.Column('email', db.String(50), unique=True, index=True)
+    registered_on = db.Column('registered_on', db.DateTime)
+
+    def __init__(self, email , password):
+        self.password = password
+        self.email = email
+        self.registered_on = datetime.utcnow()
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id.encode('utf-8')
+
+    def __repr__(self):
+        return '<User %r>' % (self.username)
+
 
 @login_manager.user_loader
 def load_user(id):
@@ -42,14 +70,75 @@ def searh():
     form=SearchForm()
     return render_template("searchsb.html",images=[image],form=form)
 
+class MyEqualTo(object):
+    """
+    Compares the values of two fields.
+
+    :param fieldname:
+        The name of the other field to compare to.
+    :param message:
+        Error message to raise in case of a validation error. Can be
+        interpolated with `%(other_label)s` and `%(other_name)s` to provide a
+        more helpful error.
+    """
+    def __init__(self, fieldname, message=None):
+        self.fieldname = fieldname
+        self.message = message
+
+    def __call__(self, form, field):
+        try:
+            other = form[self.fieldname]
+        except KeyError:
+            raise ValidationError(field.gettext("Invalid field name '%s'.") % self.fieldname)
+        if other.data!=None and field.data != other.data:
+            d = {
+                'other_label': hasattr(other, 'label') and other.label.text or self.fieldname,
+                'other_name': self.fieldname
+            }
+            message = self.message
+            if message is None:
+                message = field.gettext('Field must be equal to %(other_name)s.')
+
+            raise ValidationError(message % d)
+
+
+class LoginForm(Form):
+    email = StringField(label="Email",render_kw={"type":"email", 'autofocus': True, 'required':True , 'placeholder':'Email'})
+    password = StringField(label="Password",validators=[MyEqualTo('confirm', message='Passwords must match')],render_kw={"type":"password","required":True, 'placeholder':'Password'})
+    confirm = StringField(label="Confirm Password",render_kw={"type":"password", 'placeholder':'Confirm password'})
+    register = SubmitField("Register")
+    login= SubmitField("Login")
+
 @app.route("/signin",methods=["GET","POST"])
 def login():
-    image=yelpImage()
-    form=LoginForm()
-    class SecondaryButton():
-        text="hello"
-    secondaryButton=SecondaryButton()
-    return render_template("signin.html",form=form,images=[image],sb=secondaryButton)
+    form = LoginForm(request.form, csrf_enabled=False)
+    image = yelpImage()
+    if request.method == 'POST' and not form.validate():
+        flash("Passwords don't match.")
+    if request.method == 'POST' and form.validate():
+        if form.confirm.data==None:
+            # this is a login request
+        else:
+            # this is a registeration request
+            user = User(form.email.data, form.password.data)
+            db.session.add(user)
+            db.session.commit()
+            return None
+    return render_template('login.html', form=form, images=[image])
+
+def oldlogin():
+    if request.method=='GET':
+        image=yelpImage()
+        form=LoginForm()
+        class SecondaryButton():
+            text="hello"
+        secondaryButton=SecondaryButton()
+        return render_template("login.html",form=form,images=[image],sb=secondaryButton)
+    user = User(request.form['username'] , request.form['password'],request.form['email'])
+    db.session.add(user)
+    db.session.commit()
+    # flash('User successfully registered')
+    # return redirect(url_for('login'))
 
 @app.route("/")
 def search():
