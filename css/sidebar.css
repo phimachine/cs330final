@@ -10,14 +10,26 @@
     z-index: 999;
     color: #fff;
     transition: all 0.3s;
+    background: #7386D5;
+
 }
 
-#sidebar-content{
-    background: #7386D5;
-}
+/*#sidebar-content{*/
+    /*background: #7386D5;*/
+/*}*/
 
 #sidebar.active {
     margin-left: -250px;
+}
+
+#sidebar-toggle{
+    position:absolute;
+    left:250px;
+    transition: all 0.3s;
+}
+
+#sidebar-toggle.active{
+    left:0px;
 }
 
 #sidebar .sidebar-header {
@@ -128,9 +140,9 @@ a.article, a.article:hover {
     }
 }
 
-#sidebar-content{
-    width:200px;
-}
+/*#sidebar-content{*/
+    /*width:200px;*/
+/*}*/
 
 .wrapper {
     display: flex;
