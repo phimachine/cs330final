@@ -10,9 +10,9 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 {% endblock %}
 
-{% block signinbutton %}
-  <a class="btn btn-sm btn-secondary" href="/signin">Sign up & Log in</a>
-{% endblock %}
+{#{% block signinbutton %}#}
+{#  <a class="btn btn-sm btn-secondary" href="/signin">Sign up & Log in</a>#}
+{#{% endblock %}#}
 
 
 {% block content %}
@@ -34,7 +34,6 @@
 
 {%block scripts%}
   {{super()}}
-  {#  <script src="js/search.js"></script>#}
   <script src="js/yelpAPI.js"></script>
   <script src="js/googlemaps.js"></script>
   <script async defer

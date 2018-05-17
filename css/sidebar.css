@@ -58,6 +58,13 @@
   background: #6d7fcc;
 }
 
+
+#sidebar .sidebar-header h5{
+  padding: 20px;
+  background: #6d7fcc;
+  padding-bottom:0px;
+}
+
 #sidebar ul.components {
   padding: 20px 0;
   border-bottom: 1px solid #47748b;
@@ -66,6 +73,10 @@
 #sidebar ul p {
   color: #fff;
   padding: 10px;
+}
+
+#sidebar ul li{
+  padding:10px;
 }
 
 #sidebar ul li a {
@@ -88,16 +99,8 @@ a[data-toggle="collapse"] {
   position: relative;
 }
 
-a[aria-expanded="false"]::before, a[aria-expanded="true"]::before {
-  font-family: "Font Awesome 5 Free";
-  content: '\f078';
-  display: block;
-  position: absolute;
-  right: 20px;
-  font-size: 0.6em;
-}
-a[aria-expanded="true"]::before {
-  content: '\e260';
+#restname{
+  font-size:40px;
 }
 
 
@@ -118,8 +121,11 @@ ul.CTAs a {
   border-radius: 5px;
   margin-bottom: 5px;
 }
-a.download {
+button.btn {
   background: #fff;
+  color: #7386D5;
+}
+button.btn{
   color: #7386D5;
 }
 a.article, a.article:hover {
@@ -159,8 +165,12 @@ a.article, a.article:hover {
   #sidebarCollapse span {
     display: none;
   }
+
   #sidebar-toggle{
     left:0px;
+  }
+  #sidebar-toggle.active{
+    left:500px;
   }
 }
 

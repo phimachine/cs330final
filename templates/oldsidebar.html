@@ -1,21 +1,21 @@
 <div id="sidebar">
     <div class="sidebar-header">
-      <h5>Restaurant Information</h5>
+      <h3>Restaurant Information</h3>
     </div>
     <div>
       <ul class="list-unstyled components">
-        <h3 id="restname" class="text-center">Select a restaurant</h3>
+        <p id="restname"></p>
         <li class="active">
-          <a href="#restcategory">Category</a>
-          <ul id="restcategory">
+          <a href="#restcategory" data-toggle="collapse" aria-expanded="false">Category</a>
+          <ul class="collapse list-unstyled" id="restcategory">
 {#            <li><a href="#">Home 1</a></li>#}
 {#            <li><a href="#">Home 2</a></li>#}
 {#            <li><a href="#">Home 3</a></li>#}
           </ul>
         </li>
         <li>
-          <a href="#restlocation">Location</a>
-          <ul id="restlocation">
+          <a href="#restlocation" data-toggle="collapse" aria-expanded="false">Location</a>
+          <ul class="collapse list-unstyled" id="restlocation">
 {#            <li><a href="#">Home 1</a></li>#}
 {#            <li><a href="#">Home 2</a></li>#}
 {#            <li><a href="#">Home 3</a></li>#}
@@ -27,16 +27,8 @@
       </ul>
 
       <ul class="list-unstyled CTAs">
-{#        <li><a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a></li>#}
-        {% if not g.user.is_authenticated%}
-          <li><a type="button" class="btn btn-large btn-default container-fluid download" onclick="wtf()">I want to go</a></li>
-        {% endif %}
-        {% if g.user.is_authenticated%}
-
-        <li>
-          <a class="btn btn-sm btn-secondary" onclick="wtf()">I want to go </a>
-        </li>
-        {% endif %}
+        <li><a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a></li>
+        <li><button type="button" class="btn btn-large btn-default container-fluid download">I want to go</button></li>
       </ul>
     </div>
   </div>

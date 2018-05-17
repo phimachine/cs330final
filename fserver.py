@@ -1,10 +1,10 @@
 from datetime import datetime
 from yelp_query import *
-from flask import Flask, render_template, send_from_directory, Response, request, flash, redirect, url_for
+from flask import Flask, render_template, send_from_directory, Response, request, flash, redirect, url_for, g, session
 from flask_wtf import Form
 from wtforms import SelectField, DecimalField, BooleanField, SubmitField, StringField, validators, ValidationError
 from flask_bootstrap import Bootstrap
-from flask_login import LoginManager, login_user , logout_user , current_user , login_required
+from flask_login import LoginManager, login_user , logout_user , current_user , login_required, AnonymousUserMixin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import create_engine
@@ -12,15 +12,22 @@ from sqlalchemy.orm import sessionmaker
 from yelpapi.geojson import getFeat
 import json
 
+class Anonymous(AnonymousUserMixin):
+  def __init__(self):
+    self.username = 'Guest'
 app=Flask(__name__,static_url_path="")
 Bootstrap(app)
-# app.debug=True
+app.debug=True
 app.secret_key = 'jasonhu'
 login_manager = LoginManager()
+login_manager.anonymous_user = Anonymous
+
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/database.db'#'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
+
+theusername=None
 
 class SearchForm(Form):
     location = StringField(label="Location",render_kw={'autofocus': True, 'required':True , 'placeholder':'Location'})
@@ -42,9 +49,11 @@ class User(db.Model):
         self.password = password
         self.email = email
         self.registered_on = datetime.utcnow()
+        self.is_authenticated=True
+        self.is_anonymous=False
 
     def is_authenticated(self):
-        return True
+        return self.is_authenticated
 
     def is_active(self):
         return True
@@ -71,6 +80,7 @@ class Restaurant(db.Model):
     phone= db.Column('phone',db.String(20))
     image_url=db.Column('image_url',db.String(300))
     location_id=db.Column(db.Integer,db.ForeignKey("locations.id"),nullable=False)
+    location=db.relationship('Location',backref=db.backref('restaurants',lazy=True))
     # location=db.relationship("Location",backref=db.backref("restaurants",lazy=True))
     price=db.Column('price',db.String(10))
     rating=db.Column('rating',db.Float)
@@ -87,7 +97,7 @@ class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # restaurant_id = db.Column(db.String(50), db.ForeignKey('restaurants.id'),
     #     nullable=False)
-    restaurant_id=db.relationship("Restaurant",backref=db.backref("locations",lazy=True))
+    # restaurant_id=db.relationship("Restaurant",backref=db.backref("locations",lazy=True))
 
     address1=db.Column(db.String(100), nullable=False)
     address2=db.Column(db.String(100), nullable=False)
@@ -97,6 +107,16 @@ class Location(db.Model):
     country=db.Column(db.String(100), nullable=False)
     state=db.Column(db.String(100), nullable=False)
 
+class Interest(db.Model):
+    __tablename__='interests'
+    id=db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer,db.ForeignKey("users.user_id"),nullable=False)
+    user = db.relationship('User',backref=db.backref('interests',lazy=True))
+    restaurant_id=db.Column(db.String(50),db.ForeignKey("restaurants.id"),nullable=False)
+    restaurant=db.relationship('Restaurant',backref=db.backref('interests',lazy=True))
+    count=('count',db.Integer)
+
+db.session.flush()
 db.create_all()
 
 @login_manager.user_loader
@@ -152,17 +172,27 @@ def restaurantinfo():
         cat_string+=cat.name
         cat_string+="\\"
     cat_string=cat_string[:-1]
-    to_json["category"]=cat_string
+    to_json["category"]=[i.name for i in rest.categories]
     to_json["image_url"]=rest.image_url
-    to_json["location"]=rest
+    loc=rest.location
+    addr_list=[loc.address1,loc.address2,loc.address3,loc.city,loc.state,loc.country,loc.zip_code]
+    addr_list=[i for i in addr_list if i!=""]
+    location_string=', '.join(addr_list)
+    to_json["location_string"]=location_string
+    to_json["location"]=addr_list
     to_json["name"]=rest.name
 
-
-
-
-    res = Response(to_json)
+    res = Response(json.dumps(to_json))
     res.headers['Content-type'] = 'application/json'
     return res
+
+@app.route("/spy",methods=["POST"])
+@login_required
+def spy():
+    print(g.user)
+
+
+    return None
 
 @app.route("/signin",methods=["GET","POST"])
 def login():
@@ -181,7 +211,9 @@ def login():
                 return render_template('login.html', form=form, images=[image])
             login_user(registered_user)
             # logged in
-            return redirect(request.args.get('next') or url_for('search'))
+            if g.user.email!=None:
+                theusername=g.user.email
+            return redirect(url_for('search'))
         else:
             # this is a registration request
             user = User(form.email.data, form.password.data)
@@ -270,7 +302,12 @@ def query():
                 foundCat=RestaurantCategoy.query.filter_by(name=cat).first()
                 if foundCat is None:
                     newcat = RestaurantCategoy(name=cat)
-                    db.session.add(newcat)
+                    try:
+                        db.session.add(newcat)
+                        db.session.commit()
+                    except:
+                        db.session.rollback()
+                        raise
                     rest.categories.append(newcat)
                 else:
                     rest.categories.append(foundCat)
@@ -283,6 +320,7 @@ def query():
             zip_code=location['zip_code']
             country=location['country']
             state=location['state']
+            db.session.rollback()
             foundLoc=Location.query.filter_by(address1=address1,address2=address2,address3=address3,
                                               city=city,zip_code=zip_code,country=country,state=state).first()
             if foundLoc is None:
@@ -300,6 +338,28 @@ def query():
         return res
     else:
         return ('', 204)
+
+@app.before_request
+def before_request():
+    g.user = current_user
+
+@app.route("/userinfo",methods=["GET"])
+@login_required
+def userinfo():
+    request.args.get('restid')
+    return redirect(url_for('search'))
+
+@app.route("/spaa",methods=["GET"])
+@login_required
+def userinfao():
+    request.args.get('restid')
+    return redirect(url_for('search'))
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('search'))
 
 @app.route("/yelpqueryold", methods=["GET"])
 def oldquery():

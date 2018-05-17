@@ -8,12 +8,13 @@
 {% endblock %}
 
 {% block scripts%}
+  <script> username={{ g.user.email }};</script>
   {{super()}}
   <script src="js/search.js"></script>
 {% endblock %}
 
 {% block signinbutton %}
-        <a class="btn btn-sm btn-secondary" href="/">Just let me search</a>
+    <a class="btn btn-sm btn-secondary" href="/">Just let me search</a>
 {% endblock %}
 
 {% block content %}

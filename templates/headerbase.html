@@ -2,17 +2,24 @@
 {% block header %}
   <nav class="navbar navbar-default">
     <div class="container-fluid">
-        <div class="col-sm-4" id="headerslot">
-            {% block headerslot -%}
-            {%- endblock headerslot %}
-        </div>
-        <div class="col-sm-4 d-flex justify-content-center align-items-center">
-          <a class="blog-header-logo text-dark">Find Retaurants</a>
-        </div>
-        <div class="col-sm-4 d-flex justify-content-end align-items-center">
-          {% block signinbutton -%}
-          {%- endblock %}
-        </div>
+      <div class="col-sm-4" id="headerslot">
+        {% block headerslot -%}
+        {%- endblock headerslot %}
+      </div>
+      <div class="col-sm-4 d-flex justify-content-center align-items-center">
+        <a class="blog-header-logo text-dark">Find Retaurants</a>
+      </div>
+      <div id="signinbutton" class="col-sm-4 d-flex justify-content-end align-items-center">
+        {% block signinbutton -%}
+          {% if g.user.is_authenticated%}
+            <a class="btn btn-sm btn-secondary" href="/userinfo">My info</a>
+            <a class="btn btn-sm btn-secondary" href="/logout">Log out</a>
+          {% endif %}
+          {% if not g.user.is_authenticated%}
+            <a class="btn btn-sm btn-secondary" href="/signin">Sign up & Log in</a>
+          {% endif %}
+        {%- endblock %}
+      </div>
     </div>
   </nav>
 {% endblock %}
@@ -20,4 +27,9 @@
 {% block styles %}
   {{ super() }}
   <link href="/css/header.css" rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+  <script src="js/header.js"></script>
+  {{ super() }}
 {% endblock %}

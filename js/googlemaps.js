@@ -229,7 +229,27 @@ function initMap() {
             })
             .then(myJson=>{
                 console.log(myJson)
+
+                $('#sidebar, #content, #sidebar-toggle').removeClass('active');
+                $('.collapse.in').removeClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+
+                $('#restname').html(myJson['name'])
+                for (cat of myJson['category']){
+                    $('#restcategory').append('<li>'+cat+'</li>')
+                }
+                // for (loc of myJson['location']){
+                //     $('#restlocation').append('<li>'+loc+'</li>')
+                // }
+
+                $('#restlocation').append('<li>'+myJson['location_string']+'</li>')
+
+
             })
+
+
+
+
 
     })
 
