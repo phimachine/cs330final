@@ -11,6 +11,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from yelpapi.geojson import getFeat
 import json
+import datetime
 
 class Anonymous(AnonymousUserMixin):
   def __init__(self):
@@ -28,6 +29,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/database.db'#'sqlite:////t
 db = SQLAlchemy(app)
 
 theusername=None
+olduser=None
 
 class SearchForm(Form):
     location = StringField(label="Location",render_kw={'autofocus': True, 'required':True , 'placeholder':'Location'})
@@ -114,13 +116,14 @@ class Interest(db.Model):
     user = db.relationship('User',backref=db.backref('interests',lazy=True))
     restaurant_id=db.Column(db.String(50),db.ForeignKey("restaurants.id"),nullable=False)
     restaurant=db.relationship('Restaurant',backref=db.backref('interests',lazy=True))
-    count=('count',db.Integer)
+    datetime=('count',db.DateTime)
 
 db.session.flush()
 db.create_all()
 
 @login_manager.user_loader
 def load_user(id):
+    olduser=User.query.get(int(id))
     return User.query.get(int(id))
 
 
@@ -181,17 +184,18 @@ def restaurantinfo():
     to_json["location_string"]=location_string
     to_json["location"]=addr_list
     to_json["name"]=rest.name
+    userid=User.query.filter_by(email=g.user.username).first()
+
+    # TODO PROBLEM CODE, USER ANONYMOUS
+    to_json["count"]=Interest.query.filter_by(user_id=userid, restaurant_id=id).first()
 
     res = Response(json.dumps(to_json))
     res.headers['Content-type'] = 'application/json'
     return res
 
 @app.route("/spy",methods=["POST"])
-@login_required
 def spy():
     print(g.user)
-
-
     return None
 
 @app.route("/signin",methods=["GET","POST"])
@@ -344,19 +348,23 @@ def before_request():
     g.user = current_user
 
 @app.route("/userinfo",methods=["GET"])
-@login_required
 def userinfo():
+    # TODO Problem code, user anonymous
     request.args.get('restid')
     return redirect(url_for('search'))
 
-@app.route("/spaa",methods=["GET"])
-@login_required
+@app.route("/iwanttogo",methods=["GET"])
 def userinfao():
-    request.args.get('restid')
+    restid=request.args.get('restid')
+    theuser=User.query.filter_by(email=g.user.email).first()
+    therest=Restaurant.query.filter_by(id=restid).first()
+    newint = Interest(user=theuser, restaurant=therest, datetime=datetime.datetime.utcnow())
+    db.session.add(newint)
+    db.session.commit()
+    foundint=Interest.query.filter_by(user=theuser,restaurant=therest).count()
     return redirect(url_for('search'))
 
 @app.route('/logout')
-@login_required
 def logout():
     logout_user()
     return redirect(url_for('search'))

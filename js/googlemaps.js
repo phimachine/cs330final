@@ -209,9 +209,10 @@ function initMap() {
     // TODO in this case, the geojson passed to the browser does not need to contain that many features.
     // TODO modify so that it only returns the id.
     //
-
+    var restid=null;
     map.data.addListener('click', event=>{
         const id=event.feature.getProperty('id')
+        restid=id
         let config={}
         config.header={'Content-Type':'application/json','Accept':'application/json'}
         config.method='GET'
@@ -233,6 +234,7 @@ function initMap() {
                 $('#sidebar, #content, #sidebar-toggle').removeClass('active');
                 $('.collapse.in').removeClass('in');
                 $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                $('#restname').remove()
 
                 $('#restname').html(myJson['name'])
                 for (cat of myJson['category']){
@@ -243,15 +245,38 @@ function initMap() {
                 // }
 
                 $('#restlocation').append('<li>'+myJson['location_string']+'</li>')
-
+                $('#iwanttogocount').append("I want to go there "+myJson["count"]+" times.")
 
             })
 
 
 
-
-
     })
+
+    $('#iwanttogo').click(function cheat(){
+        window.location.replace("/iwanttogo?restid="+restid)
+    })
+
+    // $('#iwanttogo').click(function iwanttogo(){
+    // let config={}
+    //
+    //     config.method='GET'
+    //     config.header={'Content-Type':'application/json','Accept':'application/json'}
+    //     let post_string="/iwanttogo?restid="+restid
+    //
+    //     fetch(post_string,config)
+    //         .then(function (response){
+    //             return response.json()
+    //         })
+    //         .catch(error => {
+    //             console.error("error: ", error)
+    //         })
+    //         .then(myJson=>{
+    //             console.log(myJson)
+    //
+    //         })
+    //
+    // })
 
 
     // map.data.addListener('click', event => {
