@@ -1,19 +1,20 @@
-from flask_cors import CORS
 from datetime import datetime
 from yelp_query import *
 from flask import Flask, render_template, send_from_directory, Response, request, flash, redirect, url_for
 from flask_wtf import Form
-import flask_wtf
 from wtforms import SelectField, DecimalField, BooleanField, SubmitField, StringField, validators, ValidationError
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager, login_user , logout_user , current_user , login_required
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
-
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from yelpapi.geojson import getFeat
+import json
 
 app=Flask(__name__,static_url_path="")
 Bootstrap(app)
-app.debug=True
+# app.debug=True
 app.secret_key = 'jasonhu'
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -33,7 +34,6 @@ class yelpImage():
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column('user_id', db.Integer, primary_key=True)
-    username = db.Column('username', db.String(20), unique=True, index=True)
     password = db.Column('password', db.String(10))
     email = db.Column('email', db.String(50), unique=True, index=True)
     registered_on = db.Column('registered_on', db.DateTime)
@@ -58,8 +58,46 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % (self.username)
 
-db.create_all()
+restcat = db.Table('restcat',
+    db.Column('restaurant', db.String(50), db.ForeignKey('restaurants.id'), primary_key=True, index=True),
+    db.Column('category', db.Integer, db.ForeignKey('restaurant_categories.id'), primary_key=True, index=True)
+)
 
+class Restaurant(db.Model):
+    __tablename__= 'restaurants'
+    id= db.Column(db.String(50),primary_key=True)
+    name = db.Column('name', db.String(50),nullable=False)
+    categories=db.relationship('RestaurantCategoy',secondary=restcat, lazy='subquery',backref=db.backref('restaurants', lazy=True))
+    phone= db.Column('phone',db.String(20))
+    image_url=db.Column('image_url',db.String(300))
+    location_id=db.Column(db.Integer,db.ForeignKey("locations.id"),nullable=False)
+    # location=db.relationship("Location",backref=db.backref("restaurants",lazy=True))
+    price=db.Column('price',db.String(10))
+    rating=db.Column('rating',db.Float)
+    review_count=db.Column('review_count',db.Integer)
+    url=db.Column('url',db.String(300))
+
+class RestaurantCategoy(db.Model):
+    __tablename__='restaurant_categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name=db.Column(db.String(40),unique=True)
+
+class Location(db.Model):
+    __tablename__= 'locations'
+    id = db.Column(db.Integer, primary_key=True)
+    # restaurant_id = db.Column(db.String(50), db.ForeignKey('restaurants.id'),
+    #     nullable=False)
+    restaurant_id=db.relationship("Restaurant",backref=db.backref("locations",lazy=True))
+
+    address1=db.Column(db.String(100), nullable=False)
+    address2=db.Column(db.String(100), nullable=False)
+    address3=db.Column(db.String(100), nullable=False)
+    city=db.Column(db.String(100), nullable=False)
+    zip_code=db.Column(db.String(100), nullable=False)
+    country=db.Column(db.String(100), nullable=False)
+    state=db.Column(db.String(100), nullable=False)
+
+db.create_all()
 
 @login_manager.user_loader
 def load_user(id):
@@ -103,6 +141,28 @@ class LoginForm(Form):
     password = StringField(label="Password",validators=[MyEqualTo('confirm', message='Passwords must match')],render_kw={"type":"password","required":True, 'placeholder':'Password'})
     confirm = StringField(label="Confirm Password",render_kw={"type":"password", 'placeholder':'Confirm password'})
     register = SubmitField("Register or Login")
+
+@app.route("/restaurantinfo",methods=["GET"])
+def restaurantinfo():
+    id=request.args.get("id")
+    rest=Restaurant.query.filter_by(id=id).first()
+    to_json={}
+    cat_string=""
+    for cat in rest.categories:
+        cat_string+=cat.name
+        cat_string+="\\"
+    cat_string=cat_string[:-1]
+    to_json["category"]=cat_string
+    to_json["image_url"]=rest.image_url
+    to_json["location"]=rest
+    to_json["name"]=rest.name
+
+
+
+
+    res = Response(to_json)
+    res.headers['Content-type'] = 'application/json'
+    return res
 
 @app.route("/signin",methods=["GET","POST"])
 def login():
@@ -149,8 +209,6 @@ def oldlogin():
     # flash('User successfully registered')
     # return redirect(url_for('login'))
 
-
-
 @app.route("/searchsb")
 def searh():
     image=yelpImage()
@@ -195,9 +253,61 @@ def sends_src(path):
 def query():
     term=request.args.get("term")
     location=request.args.get("location")
-    geojson=yelp(term,location)
+    geojson, businessid, response=yelpid(term,location)
+
     if geojson!=None:
+        # enter the restaurant information in the database
+        foundRest=Restaurant.query.filter_by(id=businessid).first()
+        if foundRest is None:
+
+            rest=Restaurant(id=businessid,name=getFeat("name",response),phone=getFeat('phone',response),
+                            image_url=getFeat('image_url',response),price=getFeat("price",response),
+                            rating=getFeat("rating",response),review_count=getFeat("review_count",response),
+                            url=getFeat("url",response))
+
+            categories=getFeat("category",response)
+            for cat in categories:
+                foundCat=RestaurantCategoy.query.filter_by(name=cat).first()
+                if foundCat is None:
+                    newcat = RestaurantCategoy(name=cat)
+                    db.session.add(newcat)
+                    rest.categories.append(newcat)
+                else:
+                    rest.categories.append(foundCat)
+
+            location=getFeat("location",response)
+            address1=location['address1']
+            address2=location['address2']
+            address3=location['address3']
+            city=location['city']
+            zip_code=location['zip_code']
+            country=location['country']
+            state=location['state']
+            foundLoc=Location.query.filter_by(address1=address1,address2=address2,address3=address3,
+                                              city=city,zip_code=zip_code,country=country,state=state).first()
+            if foundLoc is None:
+                newloc=Location(address1=address1,address2=address2,address3=address3,
+                                              city=city,zip_code=zip_code,country=country,state=state)
+                rest.location=newloc
+
+                db.session.add(newloc)
+
+            db.session.add(rest)
+            db.session.commit()
+
         res=Response(geojson)
+        res.headers['Content-type'] = 'application/json'
+        return res
+    else:
+        return ('', 204)
+
+@app.route("/yelpqueryold", methods=["GET"])
+def oldquery():
+    term = request.args.get("term")
+    location = request.args.get("location")
+    geojson = yelp(term, location)
+    if geojson != None:
+        res = Response(geojson)
         res.headers['Content-type'] = 'application/json'
         return res
     else:

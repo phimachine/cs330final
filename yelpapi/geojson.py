@@ -34,7 +34,7 @@ def make_geojson(response):
     json_ret={}
     json_ret["geometry"]={}
     json_ret["geometry"]["type"]="Point"
-    coordinates=[response['coordinates']['longitude'],response['coordinates']['latitude']]
+    coordinates=getFeat("coor",response)
     json_ret["geometry"]["coordinates"]=coordinates
 
     json_ret["type"]="Feature"
@@ -55,9 +55,9 @@ def make_geojson(response):
           }
     json_ret["properties"]=feat
 
-    test=json.dumps(json_ret)
-    with open("yelpapi/geojson.json",'wb') as file:
-        pickle.dump(test,file)
+    # test=json.dumps(json_ret)
+    # with open("yelpapi/geojson.json",'wb') as file:
+    #     pickle.dump(test,file)
     return json.dumps(json_ret)
 
 def getFeat(mykey, response):
@@ -66,7 +66,22 @@ def getFeat(mykey, response):
             return [aliastitle['title'] for aliastitle in response['categories']]
         elif mykey=="phone":
             return response['display_phone']
+        elif mykey=="coor":
+            return [response['coordinates']['longitude'],response['coordinates']['latitude']]
         else:
             return response[mykey]
     except KeyError:
         return None
+
+
+def getgeojsonid(response):
+    json_ret={}
+    json_ret["geometry"]={}
+    json_ret["geometry"]["type"]="Point"
+    coordinates=getFeat("coor",response)
+    json_ret["geometry"]["coordinates"]=coordinates
+    json_ret["type"]="Feature"
+    feat={"id": getFeat("id",response)}
+    json_ret["properties"]=feat
+    return json.dumps(json_ret)
+

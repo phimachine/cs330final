@@ -208,32 +208,8 @@ function initMap() {
     // TODO response.data will be displayed with javascript, not flask.
     // TODO in this case, the geojson passed to the browser does not need to contain that many features.
     // TODO modify so that it only returns the id.
+
     //
-
-    map.data.addListener('click', event=>{
-        const id=event.feature.getProperty('id')
-        let config={}
-        config.header={'Content-Type':'application/json','Accept':'application/json'}
-        config.method='GET'
-
-        let get_string="/restaurantinfo?id="+id
-        let geoJson=null
-        let self=this
-
-        fetch(get_string,config)
-            .then(function (response){
-                return response.json()
-            })
-            .catch(error => {
-                console.error("error: ", error)
-            })
-            .then(myJson=>{
-                console.log(myJson)
-            })
-
-    })
-
-
     // map.data.addListener('click', event => {
     //     let date = new Date()
     //

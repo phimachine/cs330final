@@ -1,0 +1,107 @@
+{
+  "geometry":{
+    "type":"Point",
+    "coordinates":[
+      -73.9838,
+      40.7275
+    ]
+  },
+  "type":"Feature",
+  "properties":{
+    "category":[
+      "Korean",
+      "American (New)",
+      "Tapas\/Small Plates"
+    ],
+    "phone":"",
+    "hours":[
+      {
+        "open":[
+          {
+            "is_overnight":false,
+            "start":"1800",
+            "end":"2300",
+            "day":0
+          },
+          {
+            "is_overnight":false,
+            "start":"1800",
+            "end":"2300",
+            "day":1
+          },
+          {
+            "is_overnight":false,
+            "start":"1800",
+            "end":"2300",
+            "day":2
+          },
+          {
+            "is_overnight":false,
+            "start":"1800",
+            "end":"0000",
+            "day":3
+          },
+          {
+            "is_overnight":false,
+            "start":"1800",
+            "end":"0000",
+            "day":4
+          },
+          {
+            "is_overnight":false,
+            "start":"1200",
+            "end":"1430",
+            "day":5
+          },
+          {
+            "is_overnight":false,
+            "start":"1800",
+            "end":"0000",
+            "day":5
+          },
+          {
+            "is_overnight":false,
+            "start":"1200",
+            "end":"1430",
+            "day":6
+          },
+          {
+            "is_overnight":false,
+            "start":"1800",
+            "end":"2300",
+            "day":6
+          }
+        ],
+        "hours_type":"REGULAR",
+        "is_open_now":false
+      }
+    ],
+    "image_url":"https:\/\/s3-media1.fl.yelpcdn.com\/bphoto\/Rrtsi0d4NZ-RR91UPRn7MQ\/o.jpg",
+    "is_claimed":true,
+    "is_closed":false,
+    "location":{
+      "address1":"424 E 9th St",
+      "address2":null,
+      "address3":"",
+      "city":"New York",
+      "zip_code":"10009",
+      "country":"US",
+      "state":"NY",
+      "display_address":[
+        "424 E 9th St",
+        "New York,
+         NY 10009"
+      ],
+      "cross_streets":"East 9th St & Avenue A"
+    },
+    "name":"Thursday Kitchen",
+    "photos":null,
+    "price":"$$",
+    "rating":4.5,
+    "review_count":839,
+    "transactions":[
+
+    ],
+    "url":"https:\/\/www.yelp.com\/biz\/thursday-kitchen-new-york?adjust_creative=anjQ9xtNo3LL1YA5Qqepyw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=anjQ9xtNo3LL1YA5Qqepyw"
+  }
+}
