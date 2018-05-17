@@ -50,7 +50,7 @@ class User(db.Model):
     def __init__(self, email , password):
         self.password = password
         self.email = email
-        self.registered_on = datetime.utcnow()
+        self.registered_on = datetime.datetime.utcnow()
         self.is_authenticated=True
         self.is_anonymous=False
 
